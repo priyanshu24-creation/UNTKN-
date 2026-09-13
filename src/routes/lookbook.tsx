@@ -1,5 +1,6 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 import type { ReactNode } from "react";
+import "./lookbook.css";
 
 import picture3 from "@/assets/Picture_3.jpeg";
 import picture4 from "@/assets/Picture_4.jpeg";
