@@ -6,6 +6,11 @@ import { formatPrice } from "@/lib/format";
 import type { ProductSummary } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
+import miseryProduct from "@/assets/Picture_2.jpeg";
+import miseryHover from "@/assets/Picture_4.jpeg";
+import dragonProduct from "@/assets/Picture_1.jpeg";
+import dragonHover from "@/assets/Picture_7.jpeg";
+
 export function ProductCard({
   product,
   priority = false,
@@ -16,18 +21,19 @@ export function ProductCard({
   className?: string;
 }) {
   const wishlist = useWishlist();
-  const primary = product.images[0];
-  // Pick the hover image from the product's own Supabase image rows.
-  // We match the filename/path rather than trusting image array order, because
-  // the old rows had the two products' lifestyle images crossed.
-  const hoverPathBySlug: Record<string, string> = {
-    "misery-world": "misery-world-lifestyle-portrait",
-    "dragon-flame": "dragon-flame-lifestyle-graffiti",
+  // Use only the verified UNTKN photos for the two live products.
+  // This prevents unrelated/fake Supabase images from ever appearing on cards.
+  const primaryBySlug: Record<string, string> = {
+    "misery-world": miseryProduct,
+    "dragon-flame": dragonProduct,
   };
-  const hoverPath = hoverPathBySlug[product.slug];
-  const secondary =
-    product.images.find((image) => hoverPath && image.image_url.includes(hoverPath))?.image_url ??
-    product.images[1]?.image_url;
+  const primary = primaryBySlug[product.slug] ?? product.images[0]?.image_url;
+
+  const secondaryBySlug: Record<string, string> = {
+    "misery-world": miseryHover,
+    "dragon-flame": dragonHover,
+  };
+  const secondary = secondaryBySlug[product.slug];
   const onSale = product.sale_price !== null && product.sale_price < product.base_price;
   const saved = wishlist.has(product.id);
 
@@ -42,8 +48,8 @@ export function ProductCard({
         <div className="product-media relative aspect-[4/5] overflow-hidden bg-muted">
           {primary && (
             <img
-              src={primary.image_url}
-              alt={primary.alt_text ?? product.name}
+              src={primary}
+              alt={product.name}
               loading={priority ? "eager" : "lazy"}
               decoding="async"
               className={cn(
