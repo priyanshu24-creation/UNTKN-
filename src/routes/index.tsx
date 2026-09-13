@@ -9,8 +9,6 @@ import Picture5 from "@/assets/Picture_5.jpeg";
 import Picture6 from "@/assets/Picture_6.jpeg";
 import Picture7 from "@/assets/Picture_7.jpeg";
 import Picture8 from "@/assets/Picture_8.jpeg";
-import GirlModel5 from "@/assets/Girl_Model_5.PNG";
-import GirlModel6 from "@/assets/Girl_Model_6.PNG";
 import { NewsletterForm } from "@/components/marketing/NewsletterForm";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { siteConfig } from "@/config/site";
@@ -39,6 +37,8 @@ export const Route = createFileRoute("/")({
     await Promise.all([
       context.queryClient.ensureQueryData(homepageSectionsQuery()),
       context.queryClient.ensureQueryData(productsQuery({ sort: "newest", limit: 2 })),
+      context.queryClient.ensureQueryData(productsQuery({ category: "graphic-tees", limit: 2 })),
+      context.queryClient.ensureQueryData(productsQuery({ featuredOnly: true, limit: 2 })),
       context.queryClient.ensureQueryData(lookbookQuery()),
     ]);
   },
@@ -60,6 +60,7 @@ const campaignImages = [
 function HomePage() {
   const { data: sections } = useSuspenseQuery(homepageSectionsQuery());
   const { data: products } = useSuspenseQuery(productsQuery({ sort: "newest", limit: 2 }));
+  const { data: graphicTees } = useSuspenseQuery(productsQuery({ category: "graphic-tees", limit: 2 }));
   const { data: lookbook } = useSuspenseQuery(lookbookQuery());
 
   const hero = useSection(sections, "hero");
@@ -90,49 +91,24 @@ function HomePage() {
           </div>
         </section>
 
-        <section className="home-section" aria-labelledby="graphic-tees">
-          <div className="section-heading">
-            <div>
-              <p className="eyebrow">New category</p>
-              <h2 id="graphic-tees">Karma / History</h2>
+        {graphicTees.length > 0 && (
+          <section className="home-section home-section--products" aria-labelledby="graphic-tees">
+            <div className="section-heading">
+              <div>
+                <p className="eyebrow">Graphic Tees</p>
+                <h2 id="graphic-tees">Karma / History</h2>
+              </div>
+              <Link to="/shop" className="text-link">
+                Shop Tees
+              </Link>
             </div>
-            <Link to="/shop" className="text-link">
-              Shop all tees
-            </Link>
-          </div>
-
-          <div className="mt-7 grid grid-cols-1 gap-4 md:grid-cols-2 md:gap-5">
-            <Link to="/products/$slug" params={{ slug: "karma" }} className="group block">
-              <div className="aspect-[4/5] overflow-hidden bg-muted">
-                <img
-                  src={GirlModel5}
-                  alt="UNTKN Karma graphic tee"
-                  loading="lazy"
-                  className="photo photo-zoom"
-                />
-              </div>
-              <div className="mt-3 flex items-baseline justify-between gap-4">
-                <span className="text-xs uppercase tracking-[0.18em]">Karma</span>
-                <span className="text-xs text-muted-foreground">Shop product</span>
-              </div>
-            </Link>
-
-            <Link to="/products/$slug" params={{ slug: "history" }} className="group block">
-              <div className="aspect-[4/5] overflow-hidden bg-muted">
-                <img
-                  src={GirlModel6}
-                  alt="UNTKN History graphic tee"
-                  loading="lazy"
-                  className="photo photo-zoom"
-                />
-              </div>
-              <div className="mt-3 flex items-baseline justify-between gap-4">
-                <span className="text-xs uppercase tracking-[0.18em]">History</span>
-                <span className="text-xs text-muted-foreground">Shop product</span>
-              </div>
-            </Link>
-          </div>
-        </section>
+            <div className="product-grid">
+              {graphicTees.map((product) => (
+                <ProductCard key={product.id} product={product} />
+              ))}
+            </div>
+          </section>
+        )}
 
         <section className="editorial-intro" aria-labelledby="waffle-programme">
           <div className="editorial-intro__image">
