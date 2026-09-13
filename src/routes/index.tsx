@@ -8,6 +8,16 @@ import { Reveal, RevealImage } from "@/components/ui/Reveal";
 import { siteConfig } from "@/config/site";
 import { homepageSectionsQuery, lookbookQuery, productsQuery } from "@/lib/queries";
 import type { HomepageSection } from "@/lib/types";
+import picture2 from "@/assets/Picture_2.jpeg";
+import picture3 from "@/assets/Picture_3.jpeg";
+import picture4 from "@/assets/Picture_4.jpeg";
+import picture5 from "@/assets/Picture_5.jpeg";
+import picture6 from "@/assets/Picture_6.jpeg";
+import picture7 from "@/assets/Picture_7.jpeg";
+import picture8 from "@/assets/Picture_8.jpeg";
+import girlModel1 from "@/assets/Girl_Model_1.PNG";
+import girlModel2 from "@/assets/Girl_Model_2.PNG";
+import girlModel6 from "@/assets/Girl_Model_6.PNG";
 
 export const Route = createFileRoute("/")({
   head: () => ({
@@ -41,6 +51,18 @@ export const Route = createFileRoute("/")({
 function section(sections: HomepageSection[], key: string) {
   return sections.find((item) => item.section_key === key) ?? null;
 }
+
+const REAL_LOOKBOOK = [
+  { id: "picture-3", image_url: picture3, title: "Ledge", caption: "MISERY WORLD THERMAL · WIDE-LEG" },
+  { id: "picture-4", image_url: picture4, title: "Window Light", caption: "SLEEVE PRINT · FULL LENGTH" },
+  { id: "picture-5", image_url: picture5, title: "Corridor", caption: "SHOT ON LOCATION, UNRETOUCHED" },
+  { id: "picture-6", image_url: picture6, title: "Stairwell", caption: "DRAGON FLAME THERMAL" },
+  { id: "picture-7", image_url: picture7, title: "Mural", caption: "FOUR-COLOUR PRINT, FULL WRAP" },
+  { id: "picture-8", image_url: picture8, title: "Overhead", caption: "CRAFTED WITH PRIDE" },
+  { id: "girl-1", image_url: girlModel1, title: "Karma", caption: "KARMA FRONT · OVERSIZED FIT" },
+  { id: "girl-6", image_url: girlModel6, title: "History", caption: "HISTORY BACK · EMPIRES RISE, EMPIRES FALL" },
+  { id: "girl-2", image_url: girlModel2, title: "Chakras", caption: "SEVEN CHAKRAS BACK PRINT" },
+] as const;
 
 function HomePage() {
   const { data: sections } = useSuspenseQuery(homepageSectionsQuery());
@@ -95,7 +117,7 @@ function HomePage() {
       {collection && (
         <section className="genz-section shell genz-feature" aria-labelledby="feature-title">
           <div className="genz-feature-media">
-            <RevealImage src={collection.image_url ?? ""} alt={collection.title ?? "UNTKN collection"} priority />
+            <RevealImage src={picture2} alt="MISERY WORLD real product photograph" priority />
             <span className="genz-floating-label">DROP 01 / 2026</span>
           </div>
           <div className="genz-feature-copy">
@@ -110,11 +132,11 @@ function HomePage() {
         </section>
       )}
 
-      {lookbook.length > 0 && (
+      {REAL_LOOKBOOK.length > 0 && (
         <section className="genz-section shell" aria-labelledby="lookbook-title">
           <SectionIntro number="03" eyebrow="ON LOCATION" title="Seen in the real world." href="/lookbook" linkLabel="Open lookbook" />
           <div className="genz-lookbook-grid">
-            {lookbook.slice(0, 4).map((item, index) => (
+            {REAL_LOOKBOOK.slice(0, 4).map((item, index) => (
               <Reveal key={item.id} delay={index * 0.06} className={index === 0 ? "genz-lookbook-card genz-lookbook-card--large" : "genz-lookbook-card"}>
                 <Link to="/lookbook" className="group block">
                   <div className="genz-lookbook-media">
@@ -145,11 +167,7 @@ function HomePage() {
           </Link>
         </div>
         <div className="genz-story-image">
-          {story?.image_url ? (
-            <RevealImage src={story.image_url} alt={story.title ?? "UNTKN story"} />
-          ) : lookbook[4]?.image_url ? (
-            <RevealImage src={lookbook[4].image_url} alt="UNTKN campaign" />
-          ) : null}
+          <RevealImage src={picture5} alt="UNTKN real on-location campaign photograph" />
         </div>
       </section>
 
@@ -166,7 +184,7 @@ function HomePage() {
         </section>
       )}
 
-      {gallery && lookbook.length > 0 && (
+      {gallery && REAL_LOOKBOOK.length > 0 && (
         <section className="genz-campaign">
           <div className="shell genz-campaign-head">
             <div>
@@ -176,7 +194,7 @@ function HomePage() {
             <p>{gallery.subtitle ?? "Photographed where the clothes actually live."}</p>
           </div>
           <div className="genz-campaign-strip">
-            {lookbook.slice(0, 5).map((item) => (
+            {REAL_LOOKBOOK.slice(0, 5).map((item) => (
               <Link key={item.id} to="/lookbook" className="genz-campaign-image">
                 <img src={item.image_url} alt={item.title ?? "UNTKN campaign"} loading="lazy" />
               </Link>
@@ -224,12 +242,12 @@ function SectionIntro({
 }
 
 function Hero({ section }: { section: HomepageSection | null }) {
-  const image = section?.image_url;
+  const image = picture3;
 
   return (
     <section className="genz-hero">
       <div className="genz-hero-image">
-        {image && <img src={image} alt="UNTKN campaign" fetchPriority="high" decoding="async" />}
+        <img src={image} alt="UNTKN real campaign photograph" fetchPriority="high" decoding="async" />
         <div className="genz-hero-shade" />
         <div className="genz-hero-sticker">DROP 01<br />LIMITED RUN</div>
       </div>
