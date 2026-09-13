@@ -1,0 +1,197 @@
+/* UNTKN — full-bleed Zara-style homepage hero.
+   Uses the existing real Picture_3.jpeg. No blur, opacity or image filter. */
+
+.genz-v2-home .genz-v2-hero {
+  position: relative;
+  width: 100vw;
+  height: 100svh;
+  min-height: 620px;
+  margin: 0;
+  display: block;
+  overflow: hidden;
+  background: #111;
+}
+
+.genz-v2-home .genz-v2-hero-photo {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  background: #111;
+}
+
+.genz-v2-home .genz-v2-hero-photo::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(
+    180deg,
+    rgba(0,0,0,.16) 0%,
+    rgba(0,0,0,0) 34%,
+    rgba(0,0,0,.08) 62%,
+    rgba(0,0,0,.48) 100%
+  );
+}
+
+.genz-v2-home .genz-v2-hero-photo img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center center;
+  transform: none !important;
+  filter: none !important;
+  opacity: 1 !important;
+}
+
+/* The global Header already supplies the primary navigation.
+   Hide the duplicate hero-only navigation. */
+.genz-v2-home .genz-v2-hero-nav {
+  display: none !important;
+}
+
+.genz-v2-home .genz-v2-hero-panel {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  min-width: 0;
+  padding: 0;
+  display: block;
+  background: transparent !important;
+  pointer-events: none;
+}
+
+.genz-v2-home .genz-v2-hero-panel-top {
+  position: absolute;
+  top: 112px;
+  left: 32px;
+  color: rgba(255,255,255,.82);
+  text-shadow: 0 1px 12px rgba(0,0,0,.22);
+}
+
+.genz-v2-home .genz-v2-hero-copy {
+  position: absolute;
+  left: 32px;
+  bottom: 76px;
+  width: min(620px, calc(100% - 64px));
+  margin: 0;
+  padding: 0;
+  pointer-events: auto;
+}
+
+.genz-v2-home .genz-v2-hero-copy .genz-v2-eyebrow {
+  color: rgba(255,255,255,.88);
+  margin-bottom: 12px;
+  text-shadow: 0 1px 12px rgba(0,0,0,.35);
+}
+
+.genz-v2-home .genz-v2-hero h1 {
+  margin: 0 0 14px;
+  max-width: 700px;
+  color: #fff;
+  font-size: clamp(4.8rem, 9.5vw, 10rem);
+  line-height: .78;
+  letter-spacing: -.055em;
+  text-shadow: 0 2px 22px rgba(0,0,0,.18);
+}
+
+.genz-v2-home .genz-v2-hero-copy > p:not(.genz-v2-eyebrow) {
+  max-width: 430px;
+  color: rgba(255,255,255,.9);
+  font-size: 13px;
+  line-height: 1.55;
+  text-shadow: 0 1px 12px rgba(0,0,0,.28);
+}
+
+.genz-v2-home .genz-v2-actions {
+  margin-top: 22px;
+}
+
+.genz-v2-home .genz-v2-actions .button,
+.genz-v2-home .genz-v2-actions a {
+  border-radius: 0 !important;
+  background: #fff !important;
+  color: #111 !important;
+  border-color: #fff !important;
+}
+
+.genz-v2-home .genz-v2-hero-panel-bottom {
+  position: absolute;
+  left: 32px;
+  bottom: 24px;
+  color: rgba(255,255,255,.78);
+  text-shadow: 0 1px 10px rgba(0,0,0,.25);
+}
+
+.genz-v2-home .genz-v2-hero-made {
+  top: auto;
+  right: 32px;
+  bottom: 24px;
+  color: rgba(255,255,255,.82);
+}
+
+.genz-v2-home .genz-v2-hero-scroll {
+  right: 32px;
+  bottom: 58px;
+  color: rgba(255,255,255,.82);
+}
+
+@media (max-width: 900px) {
+  .genz-v2-home .genz-v2-hero {
+    width: 100vw;
+    min-height: 0;
+    height: 100svh;
+    margin: 0;
+  }
+
+  .genz-v2-home .genz-v2-hero-panel {
+    min-height: 0;
+    padding: 0;
+  }
+
+  .genz-v2-home .genz-v2-hero-panel-top {
+    top: 92px;
+    left: 18px;
+  }
+
+  .genz-v2-home .genz-v2-hero-copy {
+    left: 18px;
+    bottom: 72px;
+    width: calc(100% - 36px);
+  }
+
+  .genz-v2-home .genz-v2-hero h1 {
+    font-size: clamp(4rem, 17vw, 7rem);
+  }
+
+  .genz-v2-home .genz-v2-hero-panel-bottom {
+    display: none;
+  }
+
+  .genz-v2-home .genz-v2-hero-made {
+    right: 18px;
+    bottom: 22px;
+  }
+
+  .genz-v2-home .genz-v2-hero-scroll {
+    right: 18px;
+    bottom: 50px;
+  }
+}
+
+@media (max-width: 560px) {
+  .genz-v2-home .genz-v2-hero-copy {
+    bottom: 54px;
+  }
+
+  .genz-v2-home .genz-v2-hero h1 {
+    font-size: 20vw;
+  }
+
+  .genz-v2-home .genz-v2-hero-copy > p:not(.genz-v2-eyebrow) {
+    max-width: 310px;
+    font-size: 12px;
+  }
+}
