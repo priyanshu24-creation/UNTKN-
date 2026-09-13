@@ -6,6 +6,7 @@ import { ProductCard } from "@/components/shop/ProductCard";
 import { ButtonLink } from "@/components/ui/EditorialButton";
 import { Reveal, RevealImage } from "@/components/ui/Reveal";
 import { siteConfig } from "@/config/site";
+import "./homepage-zara.css";
 import { homepageSectionsQuery, lookbookQuery, productsQuery } from "@/lib/queries";
 import type { HomepageSection } from "@/lib/types";
 import picture2 from "@/assets/Picture_2.jpeg";
