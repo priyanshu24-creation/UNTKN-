@@ -850,3 +850,64 @@ body {
  .genz-v2-feature-copy h2{font-size:4.2rem}.genz-v2-editorial-grid{gap:10px}.genz-v2-editorial-meta{display:block}.genz-v2-editorial-meta span{display:block;text-align:left;margin-top:5px}
  .genz-v2-manifesto h2{font-size:3.8rem}.genz-v2-last-caption{font-size:7px}.genz-v2-newsletter h2{font-size:4rem}
 }
+
+/* Final visual refinement: smaller scale, sharper real photography, calmer spacing */
+.genz-v2-home{overflow:hidden}
+.genz-v2-home .shell{width:min(1240px,calc(100% - 56px));margin-inline:auto}
+.genz-v2-hero{min-height:0;height:680px;margin:18px auto 0;width:min(1240px,calc(100% - 56px));display:grid;grid-template-columns:1.02fr .98fr;position:relative;background:#171717;overflow:hidden}
+.genz-v2-hero>img{position:relative;inset:auto;width:100%;height:100%;object-fit:cover;object-position:center center;grid-column:2;display:block}
+.genz-v2-hero-overlay{inset:0;background:linear-gradient(90deg,rgba(0,0,0,.68) 0%,rgba(0,0,0,.16) 58%,rgba(0,0,0,.08) 100%)}
+.genz-v2-hero-content{left:0;right:auto;bottom:0;width:100%;height:100%;display:flex;align-items:center;pointer-events:none}
+.genz-v2-hero-content>div{max-width:470px;pointer-events:auto}
+.genz-v2-hero h1{font-size:clamp(3.8rem,6.2vw,6.8rem);line-height:.82}
+.genz-v2-hero-content>div>p:not(.genz-v2-eyebrow){max-width:360px;font-size:13px}
+.genz-v2-hero-top{top:18px;padding-inline:22px}
+.genz-v2-hero-bottom{bottom:18px;padding-inline:22px}
+.genz-v2-intro{padding-top:92px;padding-bottom:34px}
+.genz-v2-intro h2{font-size:clamp(2.35rem,4vw,4.5rem);max-width:620px}
+.genz-v2-products{padding-bottom:100px}
+.genz-v2-product-grid{grid-template-columns:repeat(4,minmax(0,1fr));gap:18px}
+.genz-v2-product-item .product-card .product-media img,.genz-v2-editorial-media img,.genz-v2-last-image-wrap img,.genz-v2-feature-image img{transform:none!important;transition:none!important}
+.genz-v2-feature{grid-template-columns:1.12fr .88fr;gap:70px;align-items:center;padding-top:20px;padding-bottom:110px}
+.genz-v2-feature-image{height:590px;min-height:0}
+.genz-v2-feature-copy h2{font-size:clamp(3.2rem,5.4vw,6rem)}
+.genz-v2-feature-copy>p:not(.genz-v2-eyebrow){max-width:360px;font-size:14px}
+.genz-v2-editorial{padding-bottom:105px}
+.genz-v2-section-head{margin-bottom:34px}
+.genz-v2-section-head h2{font-size:clamp(2.7rem,4.8vw,5.4rem)}
+.genz-v2-editorial-grid{grid-template-columns:repeat(3,minmax(0,1fr));gap:18px}
+.genz-v2-editorial-card-1{grid-column:auto;grid-row:auto}
+.genz-v2-editorial-card-2,.genz-v2-editorial-card-3,.genz-v2-editorial-card-4,.genz-v2-editorial-card-5{grid-column:auto;grid-row:auto}
+.genz-v2-editorial-media{aspect-ratio:3/4!important;height:auto!important}
+.genz-v2-editorial-card:nth-child(4),.genz-v2-editorial-card:nth-child(5){display:block}
+.genz-v2-manifesto{padding:105px 0}
+.genz-v2-manifesto h2{font-size:clamp(3.3rem,6.5vw,7rem);max-width:850px}
+.genz-v2-manifesto-foot{margin-top:55px}
+.genz-v2-last-image{padding-bottom:105px}
+.genz-v2-last-image-wrap{height:560px;max-width:1100px;margin:auto;overflow:hidden}
+.genz-v2-newsletter{padding-top:20px;padding-bottom:110px}
+.genz-v2-newsletter h2{font-size:clamp(3.3rem,6vw,6.8rem)}
+
+@media(max-width:900px){
+ .genz-v2-home .shell{width:calc(100% - 32px)}
+ .genz-v2-hero{width:calc(100% - 32px);height:600px;grid-template-columns:1fr;margin-top:10px}
+ .genz-v2-hero>img{grid-column:1;position:absolute;inset:0}
+ .genz-v2-hero-overlay{background:linear-gradient(180deg,rgba(0,0,0,.08) 20%,rgba(0,0,0,.68) 100%)}
+ .genz-v2-hero h1{font-size:clamp(3.4rem,12vw,6rem)}
+ .genz-v2-intro{padding-top:70px;padding-bottom:28px}
+ .genz-v2-product-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:30px 12px}
+ .genz-v2-feature{grid-template-columns:1fr;gap:38px;padding-bottom:80px}
+ .genz-v2-feature-image{height:auto;aspect-ratio:4/5}
+ .genz-v2-editorial-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+ .genz-v2-manifesto{padding:78px 0}
+ .genz-v2-last-image-wrap{height:auto;aspect-ratio:4/5}
+}
+@media(max-width:560px){
+ .genz-v2-hero{height:560px}
+ .genz-v2-hero-top,.genz-v2-hero-bottom{padding-inline:16px}
+ .genz-v2-hero-content{bottom:52px}
+ .genz-v2-intro h2{font-size:2.35rem}
+ .genz-v2-editorial-grid{gap:12px}
+ .genz-v2-section-head h2{font-size:2.65rem}
+ .genz-v2-manifesto h2{font-size:3.2rem}
+}
