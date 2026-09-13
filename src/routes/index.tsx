@@ -69,31 +69,35 @@ function HomePage() {
   return (
     <main className="genz-v2-home">
       <section className="genz-v2-hero">
-        <img src={picture3} alt="UNTKN real campaign photograph" fetchPriority="high" decoding="async" />
-        <div className="genz-v2-hero-overlay" />
-        <div className="genz-v2-hero-top">
-          <span>DROP 01 / 2026</span>
-          <span>MADE IN KOLKATA</span>
-        </div>
-        <div className="genz-v2-hero-content shell">
-          <div>
-            <p className="genz-v2-eyebrow">{hero?.eyebrow ?? "WAFFLE PROGRAMME"}</p>
+        <div className="genz-v2-hero-panel">
+          <div className="genz-v2-hero-panel-top">
+            <span>DROP 01 / 2026</span>
+          </div>
+          <div className="genz-v2-hero-copy">
+            <p className="genz-v2-eyebrow">{hero?.eyebrow ?? "CAPSULE 01 — WAFFLE PROGRAMME"}</p>
             <h1>{hero?.title ?? "MISERY WORLD"}</h1>
-            <p>{hero?.subtitle ?? "Heavyweight texture. Hand-drawn graphics. Built for everyday wear."}</p>
+            <p>{hero?.subtitle ?? "Heavyweight waffle thermals, printed sleeve to sleeve, made in short runs and never reprinted."}</p>
             <div className="genz-v2-actions">
               <ButtonLink to={(hero?.cta_href ?? "/shop") as string} variant="solid" size="md">
-                {hero?.cta_label ?? "Shop the drop"}
-              </ButtonLink>
-              <ButtonLink to="/lookbook" variant="outline" size="md">
-                View lookbook
+                {hero?.cta_label ?? "Shop collection"}
               </ButtonLink>
             </div>
           </div>
+          <div className="genz-v2-hero-panel-bottom">
+            <span>UNKNOWN BY NAME. UNFORGETTABLE BY STYLE.</span>
+          </div>
         </div>
-        <div className="genz-v2-hero-bottom shell">
-          <span>UNKNOWN BY NAME. UNFORGETTABLE BY STYLE.</span>
-          <span>SCROLL ↓</span>
+        <div className="genz-v2-hero-photo">
+          <img src={picture3} alt="UNTKN MISERY WORLD real campaign photograph" fetchPriority="high" decoding="async" />
+          <span className="genz-v2-hero-made">MADE IN KOLKATA</span>
+          <span className="genz-v2-hero-scroll">SCROLL ↓</span>
         </div>
+        <nav className="genz-v2-hero-nav" aria-label="Primary navigation">
+          <Link to="/shop">SHOP</Link>
+          <Link to="/collections">COLLECTIONS</Link>
+          <Link to="/lookbook">LOOKBOOK</Link>
+          <Link to="/about">ABOUT</Link>
+        </nav>
       </section>
 
       <section className="genz-v2-intro shell">

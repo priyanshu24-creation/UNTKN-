@@ -911,3 +911,140 @@ body {
  .genz-v2-section-head h2{font-size:2.65rem}
  .genz-v2-manifesto h2{font-size:3.2rem}
 }
+
+/* ================================================================
+   HERO REFINEMENT — screenshot-matched first viewport
+   Only the hero is changed here. The rest of the homepage is untouched.
+   ================================================================ */
+.genz-v2-hero{
+  position:relative;
+  height:calc(100svh - 20px);
+  min-height:560px;
+  margin:10px 18px 0;
+  display:grid;
+  grid-template-columns:1.02fr .98fr;
+  overflow:hidden;
+  background:#111;
+  color:#fff;
+}
+.genz-v2-hero-panel{
+  position:relative;
+  min-width:0;
+  background:#111;
+  padding:28px 64px 24px;
+  display:flex;
+  flex-direction:column;
+  justify-content:space-between;
+}
+.genz-v2-hero-panel-top,
+.genz-v2-hero-panel-bottom{
+  font-size:9px;
+  line-height:1.2;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:#8b8b86;
+}
+.genz-v2-hero-panel-bottom{color:#777771}
+.genz-v2-hero-copy{
+  width:min(100%,540px);
+  margin-top:auto;
+  margin-bottom:auto;
+  padding-top:42px;
+}
+.genz-v2-hero-copy .genz-v2-eyebrow{margin-bottom:16px;color:#858580}
+.genz-v2-hero h1{
+  margin:0 0 24px;
+  max-width:560px;
+  font-family:var(--font-display);
+  font-size:clamp(4.2rem,6.8vw,7.2rem);
+  font-weight:500;
+  line-height:.82;
+  letter-spacing:-.052em;
+  text-transform:uppercase;
+}
+.genz-v2-hero-copy>p:not(.genz-v2-eyebrow){
+  max-width:390px;
+  margin:0;
+  color:#b9b9b4;
+  font-size:13px;
+  line-height:1.65;
+}
+.genz-v2-actions{margin-top:28px}
+.genz-v2-actions .button,
+.genz-v2-actions a{border-radius:0!important}
+.genz-v2-hero-photo{
+  position:relative;
+  min-width:0;
+  height:100%;
+  overflow:hidden;
+  background:#ddd;
+}
+.genz-v2-hero-photo img{
+  display:block;
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center center;
+  transform:none!important;
+  filter:none!important;
+}
+.genz-v2-hero-made,
+.genz-v2-hero-scroll{
+  position:absolute;
+  z-index:2;
+  top:22px;
+  right:24px;
+  font-size:9px;
+  line-height:1;
+  letter-spacing:.18em;
+  text-transform:uppercase;
+  color:rgba(255,255,255,.8);
+}
+.genz-v2-hero-scroll{
+  top:auto;
+  bottom:22px;
+  color:rgba(255,255,255,.72);
+}
+.genz-v2-hero-nav{
+  position:absolute;
+  z-index:5;
+  top:0;
+  left:50%;
+  transform:translateX(-50%);
+  height:48px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:28px;
+  white-space:nowrap;
+}
+.genz-v2-hero-nav a{
+  color:rgba(255,255,255,.82);
+  text-decoration:none;
+  font-size:9px;
+  line-height:1;
+  letter-spacing:.2em;
+  text-transform:uppercase;
+}
+.genz-v2-hero-nav a:hover{color:#fff}
+
+@media (max-width:900px){
+  .genz-v2-hero{
+    height:auto;
+    min-height:0;
+    margin:8px 8px 0;
+    grid-template-columns:1fr;
+  }
+  .genz-v2-hero-photo{order:1;height:68svh;min-height:430px}
+  .genz-v2-hero-panel{order:2;min-height:480px;padding:26px 24px 22px}
+  .genz-v2-hero-copy{padding-top:28px}
+  .genz-v2-hero h1{font-size:clamp(3.6rem,16vw,6.5rem)}
+  .genz-v2-hero-nav{top:0;gap:15px;width:100%;padding-inline:12px}
+  .genz-v2-hero-nav a{font-size:8px}
+}
+@media (max-width:560px){
+  .genz-v2-hero-photo{height:62svh;min-height:390px}
+  .genz-v2-hero-panel{min-height:430px}
+  .genz-v2-hero-nav{justify-content:space-between;gap:8px}
+  .genz-v2-hero-nav a{font-size:7px;letter-spacing:.14em}
+}
