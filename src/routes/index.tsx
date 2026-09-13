@@ -1,0 +1,414 @@
+import { useSuspenseQuery } from "@tanstack/react-query";
+import { Link, createFileRoute } from "@tanstack/react-router";
+
+import { NewsletterForm } from "@/components/marketing/NewsletterForm";
+import { ProductCard } from "@/components/shop/ProductCard";
+import { ButtonLink } from "@/components/ui/EditorialButton";
+import { Reveal, RevealImage, RevealWords } from "@/components/ui/Reveal";
+import { siteConfig } from "@/config/site";
+import { homepageSectionsQuery, lookbookQuery, productsQuery } from "@/lib/queries";
+import type { HomepageSection } from "@/lib/types";
+
+export const Route = createFileRoute("/")({
+  head: () => ({
+    meta: [
+      { title: "UNTKN — Heavyweight Waffle Thermals, Printed by Hand" },
+      {
+        name: "description",
+        content:
+          "Independent streetwear from Kolkata. Hand-drawn graphics on heavyweight waffle thermals, made in short runs and never reprinted.",
+      },
+      { property: "og:title", content: "UNTKN — Heavyweight Waffle Thermals, Printed by Hand" },
+      {
+        property: "og:description",
+        content:
+          "Independent streetwear from Kolkata. Hand-drawn graphics on heavyweight waffle thermals, made in short runs.",
+      },
+      { property: "og:type", content: "website" },
+      { name: "twitter:card", content: "summary_large_image" },
+    ],
+  }),
+  loader: async ({ context }) => {
+    await Promise.all([
+      context.queryClient.ensureQueryData(homepageSectionsQuery()),
+      context.queryClient.ensureQueryData(productsQuery({ sort: "newest", limit: 4 })),
+      context.queryClient.ensureQueryData(productsQuery({ featuredOnly: true, limit: 4 })),
+      context.queryClient.ensureQueryData(lookbookQuery()),
+    ]);
+  },
+  component: HomePage,
+});
+
+function useSection(sections: HomepageSection[], key: string) {
+  return sections.find((s) => s.section_key === key) ?? null;
+}
+
+function HomePage() {
+  const { data: sections } = useSuspenseQuery(homepageSectionsQuery());
+  const { data: newArrivals } = useSuspenseQuery(productsQuery({ sort: "newest", limit: 4 }));
+  const { data: featured } = useSuspenseQuery(productsQuery({ featuredOnly: true, limit: 4 }));
+  const { data: lookbook } = useSuspenseQuery(lookbookQuery());
+
+  const hero = useSection(sections, "hero");
+  const collection = useSection(sections, "featured_collection");
+  const story = useSection(sections, "brand_story");
+  const promo = useSection(sections, "promo");
+  const gallery = useSection(sections, "gallery");
+  const newsletter = useSection(sections, "newsletter");
+
+  return (
+    <>
+      <Hero section={hero} />
+
+      {/* new arrivals */}
+      <section className="shell pt-24 md:pt-32" aria-labelledby="new-arrivals">
+        <div className="hairline-b flex flex-wrap items-end justify-between gap-4 pb-6">
+          <div>
+            <p className="label-xs text-muted-foreground">Latest Drop</p>
+            <h2 id="new-arrivals" className="display-md mt-3">
+              New Arrivals
+            </h2>
+          </div>
+          <Link to="/shop" search={{ sort: "newest" }} className="label-xs link-rule">
+            View All
+          </Link>
+        </div>
+        <div className="mt-10 grid grid-cols-2 gap-x-4 gap-y-12 md:grid-cols-3 md:gap-x-6 xl:grid-cols-4">
+          {newArrivals.map((product, i) => (
+            <Reveal key={product.id} delay={i * 0.06}>
+              <ProductCard product={product} />
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {collection && <FeaturedCollection section={collection} />}
+
+      {/* editorial / lookbook strip */}
+      {lookbook.length > 0 && (
+        <section className="shell pt-24 md:pt-32" aria-labelledby="editorial">
+          <div className="hairline-b flex flex-wrap items-end justify-between gap-4 pb-6">
+            <div>
+              <p className="label-xs text-muted-foreground">Editorial</p>
+              <h2 id="editorial" className="display-md mt-3">
+                Campaign 01
+              </h2>
+            </div>
+            <Link to="/lookbook" className="label-xs link-rule">
+              Full Lookbook
+            </Link>
+          </div>
+          <div className="mt-10 grid gap-4 md:grid-cols-12 md:gap-6">
+            {lookbook.slice(0, 3).map((item, i) => (
+              <Reveal
+                key={item.id}
+                delay={i * 0.08}
+                className={i === 0 ? "md:col-span-7" : "md:col-span-5"}
+              >
+                <Link
+                  to="/lookbook"
+                  className="group block"
+                  aria-label={item.title ?? "Lookbook"}
+                >
+                  <div
+                    className={
+                      i === 0
+                        ? "aspect-[4/5] overflow-hidden bg-muted md:aspect-[16/13]"
+                        : "aspect-[4/5] overflow-hidden bg-muted"
+                    }
+                  >
+                    <img
+                      src={item.image_url}
+                      alt={item.title ?? "Campaign photograph"}
+                      loading="lazy"
+                      className="photo photo-zoom"
+                    />
+                  </div>
+                  <div className="mt-3 flex items-baseline justify-between gap-4">
+                    <p className="label-xs">{item.title}</p>
+                    <p className="label-xs text-muted-foreground">{item.caption}</p>
+                  </div>
+                </Link>
+              </Reveal>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {story && <BrandStory section={story} />}
+
+      {/* featured products */}
+      {featured.length > 0 && (
+        <section className="shell pt-24 md:pt-32" aria-labelledby="featured-products">
+          <div className="hairline-b flex flex-wrap items-end justify-between gap-4 pb-6">
+            <div>
+              <p className="label-xs text-muted-foreground">Selected</p>
+              <h2 id="featured-products" className="display-md mt-3">
+                Featured
+              </h2>
+            </div>
+            <Link to="/shop" search={{ featured: true }} className="label-xs link-rule">
+              Shop Featured
+            </Link>
+          </div>
+          <div className="mt-10 grid grid-cols-2 gap-x-4 gap-y-12 md:grid-cols-3 md:gap-x-6 xl:grid-cols-4">
+            {featured.map((product, i) => (
+              <Reveal key={product.id} delay={i * 0.06}>
+                <ProductCard product={product} />
+              </Reveal>
+            ))}
+          </div>
+        </section>
+      )}
+
+      {promo && <PromoBanner section={promo} />}
+
+      {gallery && lookbook.length > 0 && <GalleryStrip section={gallery} images={lookbook} />}
+
+      <Newsletter section={newsletter} />
+    </>
+  );
+}
+
+/* ------------------------------- hero ------------------------------- */
+
+function Hero({ section }: { section: HomepageSection | null }) {
+  const image = section?.image_url;
+  const headline = section?.title ?? siteConfig.brand.tagline;
+
+  return (
+    <section className="relative h-[88svh] min-h-[34rem] w-full overflow-hidden bg-ink md:h-[94svh]">
+      {image && (
+        <img
+          src={image}
+          alt=""
+          aria-hidden="true"
+          className="photo absolute inset-0 scale-[1.03] opacity-90"
+          style={{ objectPosition: "center 30%" }}
+        />
+      )}
+      <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/25 to-ink/45" />
+
+      <div className="shell relative flex h-full flex-col justify-end pb-14 md:pb-20">
+        <div className="max-w-3xl text-paper">
+          {section?.eyebrow && (
+            <Reveal y={12} duration={0.6}>
+              <p className="label-xs text-paper/80">{section.eyebrow}</p>
+            </Reveal>
+          )}
+          <h1 className="display-lg mt-5">
+            <RevealWords text={headline} delay={0.1} />
+          </h1>
+          {section?.subtitle && (
+            <Reveal y={16} delay={0.45} className="mt-6 max-w-xl">
+              <p className="text-[0.95rem] leading-relaxed text-paper/85 md:text-base">
+                {section.subtitle}
+              </p>
+            </Reveal>
+          )}
+          <Reveal y={16} delay={0.6} className="mt-9 flex flex-wrap gap-3">
+            <ButtonLink
+              to={(section?.cta_href ?? "/shop") as string}
+              variant="onImage"
+              size="md"
+              className="bg-paper text-ink hover:bg-transparent hover:text-paper"
+            >
+              {section?.cta_label ?? "Shop Collection"}
+            </ButtonLink>
+            {section?.secondary_cta_label && (
+              <ButtonLink
+                to={(section.secondary_cta_href ?? "/lookbook") as string}
+                variant="onImage"
+                size="md"
+              >
+                {section.secondary_cta_label}
+              </ButtonLink>
+            )}
+          </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ------------------------ featured collection ------------------------ */
+
+function FeaturedCollection({ section }: { section: HomepageSection }) {
+  return (
+    <section className="shell pt-24 md:pt-32" aria-labelledby="featured-collection">
+      <div className="grid items-center gap-8 md:grid-cols-12 md:gap-12">
+        <RevealImage
+          src={section.image_url ?? ""}
+          alt={section.title ?? "Featured collection"}
+          className="aspect-[4/5] md:col-span-7 md:aspect-[5/6]"
+        />
+        <div className="md:col-span-5 md:pl-6">
+          <Reveal>
+            <p className="label-xs text-muted-foreground">{section.eyebrow}</p>
+            <h2 id="featured-collection" className="display-lg mt-5">
+              {section.title}
+            </h2>
+            {section.subtitle && (
+              <p className="mt-4 label-sm text-muted-foreground">{section.subtitle}</p>
+            )}
+            {section.body && <p className="body-lg mt-6 max-w-md">{section.body}</p>}
+            {section.cta_label && section.cta_href && (
+              <ButtonLink to={section.cta_href} variant="outline" size="md" className="mt-9">
+                {section.cta_label}
+              </ButtonLink>
+            )}
+          </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* --------------------------- brand story --------------------------- */
+
+function BrandStory({ section }: { section: HomepageSection }) {
+  return (
+    <section className="shell pt-24 md:pt-32" aria-labelledby="brand-story">
+      <div className="grid gap-10 md:grid-cols-12 md:gap-12">
+        <div className="md:col-span-5 md:order-2">
+          <RevealImage
+            src={section.image_url ?? ""}
+            alt={section.title ?? "The label"}
+            className="aspect-[4/5]"
+          />
+        </div>
+        <div className="md:col-span-6 md:order-1">
+          <Reveal>
+            <p className="label-xs text-muted-foreground">{section.eyebrow}</p>
+            <h2 id="brand-story" className="display-md mt-5 max-w-md">
+              {section.title}
+            </h2>
+            {section.body && (
+              <div className="mt-8 max-w-lg space-y-5">
+                {section.body.split("\n\n").map((para) => (
+                  <p key={para.slice(0, 24)} className="body-lg">
+                    {para}
+                  </p>
+                ))}
+              </div>
+            )}
+            {section.cta_label && section.cta_href && (
+              <ButtonLink to={section.cta_href} variant="ghost" size="bare" className="mt-8">
+                <span className="link-rule">{section.cta_label}</span>
+              </ButtonLink>
+            )}
+          </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------------------- promo banner ---------------------------- */
+
+function PromoBanner({ section }: { section: HomepageSection }) {
+  return (
+    <section className="relative mt-24 h-[70svh] min-h-[26rem] overflow-hidden bg-ink md:mt-32">
+      {section.image_url && (
+        <img
+          src={section.image_url}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          className="photo absolute inset-0 opacity-85"
+          style={{ objectPosition: "center 35%" }}
+        />
+      )}
+      <div className="absolute inset-0 bg-ink/45" />
+      <div className="shell relative flex h-full items-center">
+        <div className="max-w-xl text-paper">
+          <Reveal>
+            <p className="label-xs text-paper/80">{section.eyebrow}</p>
+            <h2 className="display-md mt-5">{section.title}</h2>
+            {section.subtitle && (
+              <p className="mt-4 label-sm text-paper/80">{section.subtitle}</p>
+            )}
+            {section.body && (
+              <p className="mt-6 max-w-md text-[0.95rem] leading-relaxed text-paper/85">
+                {section.body}
+              </p>
+            )}
+            {section.cta_label && section.cta_href && (
+              <ButtonLink to={section.cta_href} variant="onImage" size="md" className="mt-9">
+                {section.cta_label}
+              </ButtonLink>
+            )}
+          </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------------------- gallery strip ---------------------------- */
+
+function GalleryStrip({
+  section,
+  images,
+}: {
+  section: HomepageSection;
+  images: Array<{ id: string; image_url: string; title: string | null }>;
+}) {
+  return (
+    <section className="shell pt-24 md:pt-32" aria-labelledby="gallery">
+      <div className="hairline-b flex flex-wrap items-end justify-between gap-4 pb-6">
+        <div>
+          <p className="label-xs text-muted-foreground">{section.eyebrow}</p>
+          <h2 id="gallery" className="display-md mt-3">
+            {section.title}
+          </h2>
+        </div>
+        {section.subtitle && <p className="label-xs text-muted-foreground">{section.subtitle}</p>}
+      </div>
+      <ul className="mt-10 grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-3">
+        {images.slice(0, 8).map((item, i) => (
+          <Reveal as="li" key={item.id} delay={i * 0.05}>
+            <div className="aspect-square overflow-hidden bg-muted">
+              <img
+                src={item.image_url}
+                alt={item.title ?? "Campaign photograph"}
+                loading="lazy"
+                className="photo photo-zoom"
+              />
+            </div>
+          </Reveal>
+        ))}
+      </ul>
+      {section.cta_label && section.cta_href && (
+        <div className="mt-10">
+          <ButtonLink to={section.cta_href} variant="outline" size="md">
+            {section.cta_label}
+          </ButtonLink>
+        </div>
+      )}
+    </section>
+  );
+}
+
+/* ----------------------------- newsletter ----------------------------- */
+
+function Newsletter({ section }: { section: HomepageSection | null }) {
+  return (
+    <section className="shell pt-24 md:pt-32" aria-labelledby="newsletter">
+      <div className="hairline-t grid gap-8 pt-14 md:grid-cols-12 md:pt-20">
+        <div className="md:col-span-6">
+          <p className="label-xs text-muted-foreground">{section?.eyebrow ?? "Studio List"}</p>
+          <h2 id="newsletter" className="display-md mt-5 max-w-md">
+            {section?.title ?? "First access to every run"}
+          </h2>
+        </div>
+        <div className="md:col-span-5 md:col-start-8 md:self-end">
+          <p className="body-lg">
+            {section?.subtitle ?? "Short runs sell out. Subscribers hear before anyone else."}
+          </p>
+          <NewsletterForm className="mt-6" source="homepage" />
+        </div>
+      </div>
+    </section>
+  );
+}
