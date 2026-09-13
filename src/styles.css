@@ -1049,19 +1049,65 @@ body {
   .genz-v2-hero-nav a{font-size:7px;letter-spacing:.14em}
 }
 
-
-/* UNTKN hero photography quality fix — preserve the original photo, remove softness from presentation. */
-.genz-v2-hero-photo {
-  isolation: isolate;
-  opacity: 1 !important;
-  filter: none !important;
-  mix-blend-mode: normal !important;
+/* FINAL HERO PHOTOGRAPHY / FULL-BLEED VIEWPORT
+   The hero uses the same real UNTKN campaign photograph at a higher-resolution
+   local asset. No overlay, blur, filter, transform, or split-panel treatment. */
+.genz-v2-hero{
+  position:relative !important;
+  width:100vw !important;
+  height:100svh !important;
+  min-height:100svh !important;
+  margin:0 !important;
+  display:block !important;
+  overflow:hidden !important;
+  background:#111 !important;
+  color:#fff !important;
 }
-.genz-v2-hero-photo img {
-  opacity: 1 !important;
-  filter: none !important;
-  mix-blend-mode: normal !important;
-  image-rendering: auto;
-  backface-visibility: hidden;
-  -webkit-backface-visibility: hidden;
+.genz-v2-hero-photo{
+  position:absolute !important;
+  inset:0 !important;
+  width:100% !important;
+  height:100% !important;
+  overflow:hidden !important;
+  background:#111 !important;
+}
+.genz-v2-hero-photo img{
+  display:block !important;
+  width:100% !important;
+  height:100% !important;
+  object-fit:cover !important;
+  object-position:center center !important;
+  transform:none !important;
+  filter:none !important;
+  opacity:1 !important;
+  image-rendering:auto !important;
+}
+.genz-v2-hero-panel{
+  position:absolute !important;
+  inset:0 !important;
+  z-index:3 !important;
+  width:100% !important;
+  height:100% !important;
+  min-height:0 !important;
+  padding:28px 42px 26px !important;
+  display:flex !important;
+  flex-direction:column !important;
+  justify-content:space-between !important;
+  background:transparent !important;
+  pointer-events:none !important;
+}
+.genz-v2-hero-panel-top,
+.genz-v2-hero-panel-bottom,
+.genz-v2-hero-copy,
+.genz-v2-actions{pointer-events:auto !important}
+.genz-v2-hero-copy{margin:0 !important;padding:0 !important;align-self:flex-start !important;margin-top:auto !important;margin-bottom:7vh !important}
+.genz-v2-hero h1{font-size:clamp(3.4rem,6vw,6.4rem) !important;line-height:.86 !important;text-shadow:0 2px 16px rgba(0,0,0,.28)}
+.genz-v2-hero-copy>p:not(.genz-v2-eyebrow){color:#fff !important;text-shadow:0 1px 10px rgba(0,0,0,.35)}
+.genz-v2-hero-made,.genz-v2-hero-scroll{z-index:4 !important;text-shadow:0 1px 8px rgba(0,0,0,.4)}
+.genz-v2-hero-nav{z-index:6 !important;top:0 !important}
+@media (max-width:900px){
+  .genz-v2-hero{height:100svh !important;min-height:100svh !important}
+  .genz-v2-hero-panel{padding:18px 20px 20px !important}
+  .genz-v2-hero-copy{margin-bottom:9vh !important}
+  .genz-v2-hero h1{font-size:clamp(3rem,15vw,5.2rem) !important}
 }

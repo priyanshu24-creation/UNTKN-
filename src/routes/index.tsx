@@ -9,7 +9,7 @@ import { siteConfig } from "@/config/site";
 import { homepageSectionsQuery, lookbookQuery, productsQuery } from "@/lib/queries";
 import type { HomepageSection } from "@/lib/types";
 import picture2 from "@/assets/Picture_2.jpeg";
-import picture3 from "@/assets/Picture_3-sharp.jpeg";
+import picture3 from "@/assets/Picture_3-hero-sharp.jpeg";
 import picture5 from "@/assets/Picture_5.jpeg";
 import picture7 from "@/assets/Picture_7.jpeg";
 import picture8 from "@/assets/Picture_8.jpeg";
