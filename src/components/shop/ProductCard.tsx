@@ -1,6 +1,9 @@
 import { Link } from "@tanstack/react-router";
 import { Heart } from "lucide-react";
 
+import miseryWorldHover from "@/assets/Picture_4.jpeg";
+import dragonFlameHover from "@/assets/Picture_7.jpeg";
+
 import { useWishlist } from "@/components/providers/WishlistProvider";
 import { formatPrice } from "@/lib/format";
 import type { ProductSummary } from "@/lib/types";
@@ -17,17 +20,14 @@ export function ProductCard({
 }) {
   const wishlist = useWishlist();
   const primary = product.images[0];
-  // Pick the hover image from the product's own Supabase image rows.
-  // We match the filename/path rather than trusting image array order, because
-  // the old rows had the two products' lifestyle images crossed.
-  const hoverPathBySlug: Record<string, string> = {
-    "misery-world": "misery-world-lifestyle-portrait",
-    "dragon-flame": "dragon-flame-lifestyle-graffiti",
+  // Keep the hover image tied to the product itself. The database image rows were
+  // previously crossed between MISERY WORLD and DRAGON FLAME, so these two
+  // campaign images are explicit and cannot swap products on hover.
+  const campaignHoverImages: Record<string, string> = {
+    "misery-world": miseryWorldHover,
+    "dragon-flame": dragonFlameHover,
   };
-  const hoverPath = hoverPathBySlug[product.slug];
-  const secondary =
-    product.images.find((image) => hoverPath && image.image_url.includes(hoverPath))?.image_url ??
-    product.images[1]?.image_url;
+  const secondary = campaignHoverImages[product.slug] ?? product.images[1]?.image_url;
   const onSale = product.sale_price !== null && product.sale_price < product.base_price;
   const saved = wishlist.has(product.id);
 
