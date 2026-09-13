@@ -1,15 +1,16 @@
 import { Link, createFileRoute } from "@tanstack/react-router";
 
 import { Reveal, RevealImage } from "@/components/ui/Reveal";
-import GirlModel1 from "@/assets/Girl_Model_1.PNG";
-import GirlModel2 from "@/assets/Girl_Model_2.PNG";
-import GirlModel3 from "@/assets/Girl_Model_3.PNG";
-import GirlModel4 from "@/assets/Girl_Model_4.PNG";
-import GirlModel5 from "@/assets/Girl_Model_5.PNG";
-import GirlModel6 from "@/assets/Girl_Model_6.PNG";
-import GirlModel7 from "@/assets/Girl_Model_7.PNG";
-import GirlModel8 from "@/assets/Girl_Model_8.PNG";
-import { cn } from "@/lib/utils";
+
+import picture3 from "@/assets/Picture_3.jpeg";
+import picture4 from "@/assets/Picture_4.jpeg";
+import picture5 from "@/assets/Picture_5.jpeg";
+import picture6 from "@/assets/Picture_6.jpeg";
+import picture7 from "@/assets/Picture_7.jpeg";
+import picture8 from "@/assets/Picture_8.jpeg";
+import karmaFront from "@/assets/Girl_Model_1.PNG";
+import karmaBack from "@/assets/Girl_Model_2.PNG";
+import historyBack from "@/assets/Girl_Model_6.PNG";
 
 export const Route = createFileRoute("/lookbook")({
   head: () => ({
@@ -18,12 +19,12 @@ export const Route = createFileRoute("/lookbook")({
       {
         name: "description",
         content:
-          "The UNTKN lookbook — real campaign photography featuring the collection.",
+          "UNTKN lookbook — shot on location, styled in-house. Real campaign photography and everyday frames from the collection.",
       },
       { property: "og:title", content: "Lookbook — UNTKN" },
       {
         property: "og:description",
-        content: "Real campaign photography from UNTKN.",
+        content: "Shot on location. Styled in-house.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -32,69 +33,134 @@ export const Route = createFileRoute("/lookbook")({
   component: LookbookPage,
 });
 
-const LOOKBOOK_IMAGES = [
-  { src: GirlModel1, title: "KARMA", caption: "Front look" },
-  { src: GirlModel2, title: "KARMA", caption: "Back look" },
-  { src: GirlModel3, title: "HISTORY", caption: "Front / back" },
-  { src: GirlModel4, title: "HISTORY", caption: "Front / back" },
-  { src: GirlModel5, title: "KARMA", caption: "Editorial look" },
-  { src: GirlModel6, title: "KARMA", caption: "Editorial look" },
-  { src: GirlModel7, title: "HISTORY", caption: "Editorial look" },
-  { src: GirlModel8, title: "HISTORY", caption: "Editorial look" },
+type Look = {
+  image: string;
+  title: string;
+  caption: string;
+  product?: "misery-world" | "dragon-flame";
+  wide?: boolean;
+};
+
+const looks: Look[] = [
+  {
+    image: picture3,
+    title: "Ledge",
+    caption: "MISERY WORLD THERMAL · WIDE-LEG",
+    product: "misery-world",
+  },
+  {
+    image: picture4,
+    title: "Window Light",
+    caption: "SLEEVE PRINT · FULL LENGTH",
+    product: "misery-world",
+  },
+  {
+    image: picture5,
+    title: "Corridor",
+    caption: "SHOT ON LOCATION, UNRETOUCHED",
+    product: "misery-world",
+    wide: true,
+  },
+  {
+    image: picture6,
+    title: "Stairwell",
+    caption: "DRAGON FLAME THERMAL",
+    product: "dragon-flame",
+  },
+  {
+    image: picture7,
+    title: "Mural",
+    caption: "FOUR-COLOUR PRINT, FULL WRAP",
+    product: "dragon-flame",
+  },
+  {
+    image: picture8,
+    title: "Overhead",
+    caption: "CRAFTED WITH PRIDE",
+    product: "misery-world",
+  },
+  {
+    image: karmaFront,
+    title: "Karma",
+    caption: "KARMA FRONT — OVERSIZED FIT",
+  },
+  {
+    image: historyBack,
+    title: "History",
+    caption: "HISTORY BACK — EMPRES RISE, EMPRES FALL",
+  },
+  {
+    image: karmaBack,
+    title: "Chakras",
+    caption: "SEVEN CHAKRAS BACK PRINT",
+  },
 ];
 
 function LookbookPage() {
   return (
-    <div className="pt-28 md:pt-40">
-      <header className="shell max-w-3xl">
+    <main className="lookbook-page">
+      <section className="lookbook-intro shell">
         <p className="label-xs text-muted-foreground">Lookbook</p>
-        <h1 className="display-lg mt-6">Real pieces. Real people.</h1>
-        <p className="mt-8 max-w-prose text-sm leading-relaxed text-muted-foreground">
-          Explore the UNTKN collection through real campaign photography. Every image
-          below comes from the brand&apos;s own product shoot — no stock or placeholder
-          fashion images.
+        <h1>Shot on location, styled in-house</h1>
+        <p>
+          Every frame is photographed on the people who wear it — no studio lighting, no retouched
+          bodies. Tap a frame to shop the piece.
         </p>
-      </header>
+      </section>
 
-      <div className="shell mt-20 grid grid-cols-1 gap-4 pb-40 md:grid-cols-2 md:gap-6">
-        {LOOKBOOK_IMAGES.map((item, i) => {
-          const wide = i === 0 || i === 3;
+      <section className="lookbook-gallery shell" aria-label="UNTKN lookbook">
+        {looks.map((look, index) => (
+          <Reveal
+            key={`${look.title}-${index}`}
+            className={look.wide ? "lookbook-card lookbook-card--wide" : "lookbook-card"}
+          >
+            <figure>
+              <LookLink product={look.product} title={look.title}>
+                <RevealImage
+                  src={look.image}
+                  alt={`${look.title} — UNTKN lookbook`}
+                  className="lookbook-card__image"
+                  delay={Math.min(index * 0.035, 0.2)}
+                />
+              </LookLink>
+              <figcaption>
+                <div>
+                  <p className="lookbook-card__title">{look.title}</p>
+                  <p className="lookbook-card__caption">{look.caption}</p>
+                </div>
+                {look.product ? (
+                  <Link
+                    to="/products/$slug"
+                    params={{ slug: look.product }}
+                    className="lookbook-card__shop"
+                  >
+                    Shop the piece
+                  </Link>
+                ) : (
+                  <span className="lookbook-card__shop">Shop the piece</span>
+                )}
+              </figcaption>
+            </figure>
+          </Reveal>
+        ))}
+      </section>
+    </main>
+  );
+}
 
-          return (
-            <Reveal
-              key={`${item.title}-${i}`}
-              className={cn(wide && "md:col-span-2")}
-            >
-              <Link
-                to="/shop"
-                className="group block"
-                aria-label={`Shop ${item.title}`}
-              >
-                <figure>
-                  <RevealImage
-                    src={item.src}
-                    alt={`${item.title} — ${item.caption}`}
-                    className={cn(
-                      "w-full object-cover object-center",
-                      wide ? "aspect-[16/10]" : "aspect-[4/5]",
-                    )}
-                    delay={i * 0.04}
-                  />
-                  <figcaption className="mt-4 flex items-baseline justify-between gap-6">
-                    <div>
-                      <p className="font-sans text-sm">{item.title}</p>
-                      <p className="mt-1.5 label-xs text-muted-foreground">
-                        {item.caption}
-                      </p>
-                    </div>
-                    <span className="label-xs link-rule shrink-0">Shop the collection</span>
-                  </figcaption>
-                </figure>
-              </Link>
-            </Reveal>
-          );
-        })}
-      </div>
-    </div>
+function LookLink({
+  product,
+  title,
+  children,
+}: {
+  product?: Look["product"];
+  title: string;
+  children: React.ReactNode;
+}) {
+  if (!product) return <div aria-label={title}>{children}</div>;
+  return (
+    <Link to="/products/$slug" params={{ slug: product }} aria-label={`Shop ${title}`}>
+      {children}
+    </Link>
   );
 }
