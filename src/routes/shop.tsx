@@ -1,4 +1,4 @@
-import { useQuery, useSuspenseQuery } from "@tanstack/react-query";
+import { useQuery } from "@tanstack/react-query";
 import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { SlidersHorizontal, X } from "lucide-react";
 import { AnimatePresence, motion } from "motion/react";
@@ -70,12 +70,6 @@ export const Route = createFileRoute("/shop")({
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  loader: async ({ context }) => {
-    await Promise.all([
-      context.queryClient.ensureQueryData(categoriesQuery()),
-      context.queryClient.ensureQueryData(filterFacetsQuery()),
-    ]);
-  },
   component: ShopPage,
 });
 
@@ -84,8 +78,8 @@ function ShopPage() {
   const navigate = useNavigate({ from: "/shop" });
   const [filtersOpen, setFiltersOpen] = useState(false);
 
-  const { data: categories } = useSuspenseQuery(categoriesQuery());
-  const { data: facets } = useSuspenseQuery(filterFacetsQuery());
+  const { data: categories = [] } = useQuery(categoriesQuery());
+  const { data: facets = { sizes: [], colors: [] } } = useQuery(filterFacetsQuery());
 
   const params = useMemo(
     () => ({
