@@ -60,22 +60,11 @@ function HomePage() {
     <>
       <Hero section={hero} />
 
-      {/* new arrivals */}
-      <section className="shell pt-24 md:pt-32" aria-labelledby="new-arrivals">
-        <div className="hairline-b flex flex-wrap items-end justify-between gap-4 pb-6">
-          <div>
-            <p className="label-xs text-muted-foreground">Latest Drop</p>
-            <h2 id="new-arrivals" className="display-md mt-3">
-              New Arrivals
-            </h2>
-          </div>
-          <Link to="/shop" search={{ sort: "newest" }} className="label-xs link-rule">
-            View All
-          </Link>
-        </div>
-        <div className="mt-10 grid grid-cols-2 gap-x-4 gap-y-12 md:grid-cols-3 md:gap-x-6 xl:grid-cols-4">
+      <section className="home-section shell" aria-labelledby="new-arrivals">
+        <SectionHeader eyebrow="01 / THE DROP" title="New Arrivals" href="/shop" />
+        <div className="mt-8 grid grid-cols-2 gap-x-3 gap-y-10 md:mt-10 md:grid-cols-4 md:gap-x-5 md:gap-y-14">
           {newArrivals.map((product, i) => (
-            <Reveal key={product.id} delay={i * 0.06}>
+            <Reveal key={product.id} delay={i * 0.05}>
               <ProductCard product={product} />
             </Reveal>
           ))}
@@ -84,76 +73,18 @@ function HomePage() {
 
       {collection && <FeaturedCollection section={collection} />}
 
-      {/* editorial / lookbook strip */}
-      {lookbook.length > 0 && (
-        <section className="shell pt-24 md:pt-32" aria-labelledby="editorial">
-          <div className="hairline-b flex flex-wrap items-end justify-between gap-4 pb-6">
-            <div>
-              <p className="label-xs text-muted-foreground">Editorial</p>
-              <h2 id="editorial" className="display-md mt-3">
-                Campaign 01
-              </h2>
-            </div>
-            <Link to="/lookbook" className="label-xs link-rule">
-              Full Lookbook
-            </Link>
-          </div>
-          <div className="mt-10 grid gap-4 md:grid-cols-12 md:gap-6">
-            {lookbook.slice(0, 3).map((item, i) => (
-              <Reveal
-                key={item.id}
-                delay={i * 0.08}
-                className={i === 0 ? "md:col-span-7" : "md:col-span-5"}
-              >
-                <Link
-                  to="/lookbook"
-                  className="group block"
-                  aria-label={item.title ?? "Lookbook"}
-                >
-                  <div
-                    className={
-                      i === 0
-                        ? "aspect-[4/5] overflow-hidden bg-muted md:aspect-[16/13]"
-                        : "aspect-[4/5] overflow-hidden bg-muted"
-                    }
-                  >
-                    <img
-                      src={item.image_url}
-                      alt={item.title ?? "Campaign photograph"}
-                      loading="lazy"
-                      className="photo photo-zoom"
-                    />
-                  </div>
-                  <div className="mt-3 flex items-baseline justify-between gap-4">
-                    <p className="label-xs">{item.title}</p>
-                    <p className="label-xs text-muted-foreground">{item.caption}</p>
-                  </div>
-                </Link>
-              </Reveal>
-            ))}
-          </div>
-        </section>
-      )}
+      {lookbook.length > 0 && <EditorialLookbook images={lookbook} />}
 
       {story && <BrandStory section={story} />}
 
-      {/* featured products */}
+      {promo && <PromoBanner section={promo} />}
+
       {featured.length > 0 && (
-        <section className="shell pt-24 md:pt-32" aria-labelledby="featured-products">
-          <div className="hairline-b flex flex-wrap items-end justify-between gap-4 pb-6">
-            <div>
-              <p className="label-xs text-muted-foreground">Selected</p>
-              <h2 id="featured-products" className="display-md mt-3">
-                Featured
-              </h2>
-            </div>
-            <Link to="/shop" search={{ featured: true }} className="label-xs link-rule">
-              Shop Featured
-            </Link>
-          </div>
-          <div className="mt-10 grid grid-cols-2 gap-x-4 gap-y-12 md:grid-cols-3 md:gap-x-6 xl:grid-cols-4">
+        <section className="home-section shell" aria-labelledby="featured-products">
+          <SectionHeader eyebrow="05 / SELECTED" title="Featured" href="/shop" linkLabel="Shop Featured" />
+          <div className="mt-8 grid grid-cols-2 gap-x-3 gap-y-10 md:mt-10 md:grid-cols-4 md:gap-x-5 md:gap-y-14">
             {featured.map((product, i) => (
-              <Reveal key={product.id} delay={i * 0.06}>
+              <Reveal key={product.id} delay={i * 0.05}>
                 <ProductCard product={product} />
               </Reveal>
             ))}
@@ -161,12 +92,34 @@ function HomePage() {
         </section>
       )}
 
-      {promo && <PromoBanner section={promo} />}
-
       {gallery && lookbook.length > 0 && <GalleryStrip section={gallery} images={lookbook} />}
 
       <Newsletter section={newsletter} />
     </>
+  );
+}
+
+function SectionHeader({
+  eyebrow,
+  title,
+  href,
+  linkLabel = "View All",
+}: {
+  eyebrow: string;
+  title: string;
+  href: string;
+  linkLabel?: string;
+}) {
+  return (
+    <div className="editorial-section-header">
+      <div>
+        <p className="label-xs text-muted-foreground">{eyebrow}</p>
+        <h2 className="display-md mt-3">{title}</h2>
+      </div>
+      <Link to={href} className="label-xs link-rule shrink-0">
+        {linkLabel}
+      </Link>
+    </div>
   );
 }
 
@@ -177,55 +130,65 @@ function Hero({ section }: { section: HomepageSection | null }) {
   const headline = section?.title ?? siteConfig.brand.tagline;
 
   return (
-    <section className="relative h-[88svh] min-h-[34rem] w-full overflow-hidden bg-ink md:h-[94svh]">
+    <section className="hero-frame">
       {image && (
         <img
           src={image}
           alt=""
           aria-hidden="true"
-          className="photo absolute inset-0 scale-[1.03] opacity-90"
-          style={{ objectPosition: "center 30%" }}
+          fetchPriority="high"
+          decoding="async"
+          className="hero-image"
+          style={{ objectPosition: "center center" }}
         />
       )}
-      <div className="absolute inset-0 bg-gradient-to-t from-ink/80 via-ink/25 to-ink/45" />
 
-      <div className="shell relative flex h-full flex-col justify-end pb-14 md:pb-20">
-        <div className="max-w-3xl text-paper">
+      <div className="hero-vignette" />
+
+      <div className="hero-content shell">
+        <div className="max-w-2xl text-paper">
           {section?.eyebrow && (
-            <Reveal y={12} duration={0.6}>
-              <p className="label-xs text-paper/80">{section.eyebrow}</p>
+            <Reveal y={14} duration={0.7}>
+              <p className="hero-eyebrow">{section.eyebrow}</p>
             </Reveal>
           )}
-          <h1 className="display-lg mt-5">
-            <RevealWords text={headline} delay={0.1} />
+
+          <h1 className="hero-title">
+            <RevealWords text={headline} delay={0.12} />
           </h1>
+
           {section?.subtitle && (
-            <Reveal y={16} delay={0.45} className="mt-6 max-w-xl">
-              <p className="text-[0.95rem] leading-relaxed text-paper/85 md:text-base">
-                {section.subtitle}
-              </p>
+            <Reveal y={18} delay={0.42} className="mt-5 max-w-xl md:mt-6">
+              <p className="hero-description">{section.subtitle}</p>
             </Reveal>
           )}
-          <Reveal y={16} delay={0.6} className="mt-9 flex flex-wrap gap-3">
+
+          <Reveal y={18} delay={0.58} className="mt-7 flex flex-wrap gap-3 md:mt-9">
             <ButtonLink
               to={(section?.cta_href ?? "/shop") as string}
               variant="onImage"
               size="md"
-              className="bg-paper text-ink hover:bg-transparent hover:text-paper"
+              className="hero-primary-button"
             >
               {section?.cta_label ?? "Shop Collection"}
             </ButtonLink>
+
             {section?.secondary_cta_label && (
               <ButtonLink
                 to={(section.secondary_cta_href ?? "/lookbook") as string}
                 variant="onImage"
                 size="md"
+                className="hero-secondary-button"
               >
                 {section.secondary_cta_label}
               </ButtonLink>
             )}
           </Reveal>
         </div>
+      </div>
+
+      <div className="hero-index label-xs" aria-hidden="true">
+        SCROLL TO EXPLORE
       </div>
     </section>
   );
@@ -235,23 +198,23 @@ function Hero({ section }: { section: HomepageSection | null }) {
 
 function FeaturedCollection({ section }: { section: HomepageSection }) {
   return (
-    <section className="shell pt-24 md:pt-32" aria-labelledby="featured-collection">
-      <div className="grid items-center gap-8 md:grid-cols-12 md:gap-12">
+    <section className="home-section shell" aria-labelledby="featured-collection">
+      <div className="editorial-split">
         <RevealImage
           src={section.image_url ?? ""}
           alt={section.title ?? "Featured collection"}
-          className="aspect-[4/5] md:col-span-7 md:aspect-[5/6]"
+          priority
+          className="editorial-image editorial-image-tall"
         />
-        <div className="md:col-span-5 md:pl-6">
+
+        <div className="editorial-copy">
           <Reveal>
             <p className="label-xs text-muted-foreground">{section.eyebrow}</p>
             <h2 id="featured-collection" className="display-lg mt-5">
               {section.title}
             </h2>
-            {section.subtitle && (
-              <p className="mt-4 label-sm text-muted-foreground">{section.subtitle}</p>
-            )}
-            {section.body && <p className="body-lg mt-6 max-w-md">{section.body}</p>}
+            {section.subtitle && <p className="mt-5 label-sm text-muted-foreground">{section.subtitle}</p>}
+            {section.body && <p className="body-lg mt-7 max-w-md">{section.body}</p>}
             {section.cta_label && section.cta_href && (
               <ButtonLink to={section.cta_href} variant="outline" size="md" className="mt-9">
                 {section.cta_label}
@@ -264,27 +227,74 @@ function FeaturedCollection({ section }: { section: HomepageSection }) {
   );
 }
 
+/* --------------------------- editorial lookbook --------------------------- */
+
+function EditorialLookbook({
+  images,
+}: {
+  images: Array<{ id: string; image_url: string; title: string | null; caption?: string | null }>;
+}) {
+  const items = images.slice(0, 5);
+
+  return (
+    <section className="home-section shell" aria-labelledby="editorial-lookbook">
+      <div className="editorial-section-header">
+        <div>
+          <p className="label-xs text-muted-foreground">03 / EDITORIAL</p>
+          <h2 id="editorial-lookbook" className="display-md mt-3">
+            Campaign 01
+          </h2>
+        </div>
+        <Link to="/lookbook" className="label-xs link-rule">
+          Full Lookbook
+        </Link>
+      </div>
+
+      <div className="lookbook-grid mt-8 md:mt-10">
+        {items.map((item, i) => (
+          <Reveal
+            as="figure"
+            key={item.id}
+            delay={i * 0.07}
+            className={`lookbook-item lookbook-item-${i + 1}`}
+          >
+            <Link to="/lookbook" className="group block">
+              <div className="lookbook-media">
+                <img
+                  src={item.image_url}
+                  alt={item.title ?? "UNTKN campaign photograph"}
+                  loading="lazy"
+                  decoding="async"
+                  className="photo photo-zoom"
+                />
+                <span className="lookbook-number">0{i + 1}</span>
+              </div>
+              <figcaption className="mt-3 flex items-baseline justify-between gap-4">
+                <span className="label-xs">{item.title ?? "UNTKN"}</span>
+                {item.caption && <span className="label-xs text-muted-foreground">{item.caption}</span>}
+              </figcaption>
+            </Link>
+          </Reveal>
+        ))}
+      </div>
+    </section>
+  );
+}
+
 /* --------------------------- brand story --------------------------- */
 
 function BrandStory({ section }: { section: HomepageSection }) {
   return (
-    <section className="shell pt-24 md:pt-32" aria-labelledby="brand-story">
-      <div className="grid gap-10 md:grid-cols-12 md:gap-12">
-        <div className="md:col-span-5 md:order-2">
-          <RevealImage
-            src={section.image_url ?? ""}
-            alt={section.title ?? "The label"}
-            className="aspect-[4/5]"
-          />
-        </div>
-        <div className="md:col-span-6 md:order-1">
+    <section className="home-section shell" aria-labelledby="brand-story">
+      <div className="editorial-story">
+        <div className="editorial-story-copy">
           <Reveal>
-            <p className="label-xs text-muted-foreground">{section.eyebrow}</p>
-            <h2 id="brand-story" className="display-md mt-5 max-w-md">
+            <p className="label-xs text-muted-foreground">04 / THE LABEL</p>
+            <h2 id="brand-story" className="display-lg mt-5 max-w-xl">
               {section.title}
             </h2>
             {section.body && (
-              <div className="mt-8 max-w-lg space-y-5">
+              <div className="mt-7 max-w-lg space-y-5">
                 {section.body.split("\n\n").map((para) => (
                   <p key={para.slice(0, 24)} className="body-lg">
                     {para}
@@ -299,6 +309,12 @@ function BrandStory({ section }: { section: HomepageSection }) {
             )}
           </Reveal>
         </div>
+
+        <RevealImage
+          src={section.image_url ?? ""}
+          alt={section.title ?? "UNTKN"}
+          className="editorial-story-image"
+        />
       </div>
     </section>
   );
@@ -308,31 +324,26 @@ function BrandStory({ section }: { section: HomepageSection }) {
 
 function PromoBanner({ section }: { section: HomepageSection }) {
   return (
-    <section className="relative mt-24 h-[70svh] min-h-[26rem] overflow-hidden bg-ink md:mt-32">
+    <section className="promo-frame">
       {section.image_url && (
         <img
           src={section.image_url}
           alt=""
           aria-hidden="true"
           loading="lazy"
-          className="photo absolute inset-0 opacity-85"
-          style={{ objectPosition: "center 35%" }}
+          decoding="async"
+          className="photo absolute inset-0"
+          style={{ objectPosition: "center 38%" }}
         />
       )}
-      <div className="absolute inset-0 bg-ink/45" />
-      <div className="shell relative flex h-full items-center">
-        <div className="max-w-xl text-paper">
+      <div className="promo-overlay" />
+      <div className="shell relative z-10 flex h-full items-center">
+        <div className="max-w-2xl text-paper">
           <Reveal>
-            <p className="label-xs text-paper/80">{section.eyebrow}</p>
-            <h2 className="display-md mt-5">{section.title}</h2>
-            {section.subtitle && (
-              <p className="mt-4 label-sm text-paper/80">{section.subtitle}</p>
-            )}
-            {section.body && (
-              <p className="mt-6 max-w-md text-[0.95rem] leading-relaxed text-paper/85">
-                {section.body}
-              </p>
-            )}
+            <p className="label-xs text-paper/70">{section.eyebrow}</p>
+            <h2 className="display-lg mt-5">{section.title}</h2>
+            {section.subtitle && <p className="mt-5 label-sm text-paper/75">{section.subtitle}</p>}
+            {section.body && <p className="mt-6 max-w-lg text-[0.95rem] leading-relaxed text-paper/80">{section.body}</p>}
             {section.cta_label && section.cta_href && (
               <ButtonLink to={section.cta_href} variant="onImage" size="md" className="mt-9">
                 {section.cta_label}
@@ -355,35 +366,34 @@ function GalleryStrip({
   images: Array<{ id: string; image_url: string; title: string | null }>;
 }) {
   return (
-    <section className="shell pt-24 md:pt-32" aria-labelledby="gallery">
-      <div className="hairline-b flex flex-wrap items-end justify-between gap-4 pb-6">
+    <section className="home-section shell" aria-labelledby="gallery">
+      <div className="editorial-section-header">
         <div>
-          <p className="label-xs text-muted-foreground">{section.eyebrow}</p>
-          <h2 id="gallery" className="display-md mt-3">
-            {section.title}
-          </h2>
+          <p className="label-xs text-muted-foreground">06 / CAMPAIGN</p>
+          <h2 id="gallery" className="display-md mt-3">{section.title}</h2>
         </div>
         {section.subtitle && <p className="label-xs text-muted-foreground">{section.subtitle}</p>}
       </div>
-      <ul className="mt-10 grid grid-cols-2 gap-2 md:grid-cols-4 md:gap-3">
-        {images.slice(0, 8).map((item, i) => (
+
+      <ul className="gallery-strip mt-8 md:mt-10">
+        {images.slice(0, 5).map((item, i) => (
           <Reveal as="li" key={item.id} delay={i * 0.05}>
-            <div className="aspect-square overflow-hidden bg-muted">
+            <div className="aspect-[4/5] overflow-hidden bg-muted">
               <img
                 src={item.image_url}
                 alt={item.title ?? "Campaign photograph"}
                 loading="lazy"
+                decoding="async"
                 className="photo photo-zoom"
               />
             </div>
           </Reveal>
         ))}
       </ul>
+
       {section.cta_label && section.cta_href && (
-        <div className="mt-10">
-          <ButtonLink to={section.cta_href} variant="outline" size="md">
-            {section.cta_label}
-          </ButtonLink>
+        <div className="mt-8">
+          <ButtonLink to={section.cta_href} variant="outline" size="md">{section.cta_label}</ButtonLink>
         </div>
       )}
     </section>
@@ -394,15 +404,16 @@ function GalleryStrip({
 
 function Newsletter({ section }: { section: HomepageSection | null }) {
   return (
-    <section className="shell pt-24 md:pt-32" aria-labelledby="newsletter">
-      <div className="hairline-t grid gap-8 pt-14 md:grid-cols-12 md:pt-20">
-        <div className="md:col-span-6">
-          <p className="label-xs text-muted-foreground">{section?.eyebrow ?? "Studio List"}</p>
-          <h2 id="newsletter" className="display-md mt-5 max-w-md">
-            {section?.title ?? "First access to every run"}
+    <section className="newsletter-frame shell" aria-labelledby="newsletter">
+      <div className="newsletter-inner">
+        <div>
+          <p className="label-xs text-muted-foreground">{section?.eyebrow ?? "07 / STUDIO LIST"}</p>
+          <h2 id="newsletter" className="display-lg mt-5 max-w-2xl">
+            {section?.title ?? "Never miss a drop."}
           </h2>
         </div>
-        <div className="md:col-span-5 md:col-start-8 md:self-end">
+
+        <div className="max-w-md md:pb-1">
           <p className="body-lg">
             {section?.subtitle ?? "Short runs sell out. Subscribers hear before anyone else."}
           </p>
