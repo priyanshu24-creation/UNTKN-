@@ -49,13 +49,13 @@ export function AuthShell({
             initial={reduceMotion ? false : { opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.5, duration: 0.7 }}
-            className="max-w-md"
+            className="max-w-lg"
           >
-            <p className="font-display text-4xl leading-tight text-white">
-              Wear your story.
+            <p className="font-display text-4xl leading-tight text-white sm:text-5xl">
+              UNTKN
             </p>
-            <footer className="label-xs mt-6 text-white/60">
-              More than just a t-shirt
+            <footer className="label-xs mt-4 text-white/70">
+              UNKNOWN BY NAME · UNFORGETTABLE BY STYLE
             </footer>
           </motion.blockquote>
         </div>
