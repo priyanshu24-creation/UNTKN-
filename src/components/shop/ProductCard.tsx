@@ -6,11 +6,6 @@ import { formatPrice } from "@/lib/format";
 import type { ProductSummary } from "@/lib/types";
 import { cn } from "@/lib/utils";
 
-import miseryProduct from "@/assets/Picture_2.jpeg";
-import miseryHover from "@/assets/Picture_4.jpeg";
-import dragonProduct from "@/assets/Picture_1.jpeg";
-import dragonHover from "@/assets/Picture_7.jpeg";
-
 export function ProductCard({
   product,
   priority = false,
@@ -21,19 +16,17 @@ export function ProductCard({
   className?: string;
 }) {
   const wishlist = useWishlist();
-  // Use only the verified UNTKN photos for the two live products.
-  // This prevents unrelated/fake Supabase images from ever appearing on cards.
-  const primaryBySlug: Record<string, string> = {
-    "misery-world": miseryProduct,
-    "dragon-flame": dragonProduct,
+  const localProductImages: Record<string, { primary: string; secondary: string }> = {
+    karma: { primary: "/products/karma-front.png", secondary: "/products/karma-back.png" },
+    history: { primary: "/products/history-front.png", secondary: "/products/history-back.png" },
   };
-  const primary = primaryBySlug[product.slug] ?? product.images[0]?.image_url;
-
-  const secondaryBySlug: Record<string, string> = {
-    "misery-world": miseryHover,
-    "dragon-flame": dragonHover,
-  };
-  const secondary = secondaryBySlug[product.slug];
+  const localImages = localProductImages[product.slug];
+  const primary = localImages
+    ? { image_url: localImages.primary, alt_text: product.name, id: `${product.id}-primary` }
+    : product.images[0];
+  const secondary = localImages
+    ? { image_url: localImages.secondary, alt_text: product.name, id: `${product.id}-secondary` }
+    : product.images[1];
   const onSale = product.sale_price !== null && product.sale_price < product.base_price;
   const saved = wishlist.has(product.id);
 
@@ -48,8 +41,8 @@ export function ProductCard({
         <div className="product-media relative aspect-[4/5] overflow-hidden bg-muted">
           {primary && (
             <img
-              src={primary}
-              alt={product.name}
+              src={primary.image_url}
+              alt={primary.alt_text ?? product.name}
               loading={priority ? "eager" : "lazy"}
               decoding="async"
               className={cn(
@@ -60,7 +53,7 @@ export function ProductCard({
           )}
           {secondary && (
             <img
-              src={secondary}
+              src={secondary.image_url}
               alt=""
               aria-hidden="true"
               loading="lazy"
