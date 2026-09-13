@@ -1048,3 +1048,109 @@ body {
   .genz-v2-hero-nav{justify-content:space-between;gap:8px}
   .genz-v2-hero-nav a{font-size:7px;letter-spacing:.14em}
 }
+
+/* ================================================================
+   UNTKN HERO — FULL-BLEED FIRST VIEWPORT
+   The photograph fills the entire first screen. No split layout.
+   ================================================================ */
+.genz-v2-hero{
+  position:relative!important;
+  display:block!important;
+  width:100%!important;
+  height:100svh!important;
+  min-height:100svh!important;
+  margin:0!important;
+  overflow:hidden!important;
+  background:#111!important;
+}
+.genz-v2-hero-photo{
+  position:absolute!important;
+  inset:0!important;
+  width:100%!important;
+  height:100%!important;
+  z-index:0!important;
+  background:#111!important;
+}
+.genz-v2-hero-photo img{
+  display:block!important;
+  width:100%!important;
+  height:100%!important;
+  object-fit:cover!important;
+  object-position:center center!important;
+  transform:none!important;
+  filter:none!important;
+}
+.genz-v2-hero-panel{
+  position:absolute!important;
+  inset:0!important;
+  z-index:2!important;
+  width:100%!important;
+  height:100%!important;
+  min-height:0!important;
+  padding:0!important;
+  display:block!important;
+  background:transparent!important;
+  pointer-events:none!important;
+}
+.genz-v2-hero-panel-top{
+  position:absolute!important;
+  top:26px!important;
+  left:30px!important;
+  color:rgba(255,255,255,.82)!important;
+}
+.genz-v2-hero-panel-bottom{
+  position:absolute!important;
+  left:30px!important;
+  bottom:26px!important;
+  color:rgba(255,255,255,.72)!important;
+}
+.genz-v2-hero-copy{
+  position:absolute!important;
+  left:clamp(28px,6vw,90px)!important;
+  bottom:clamp(48px,9vh,100px)!important;
+  width:min(520px,calc(100% - 56px))!important;
+  margin:0!important;
+  padding:0!important;
+  pointer-events:auto!important;
+  text-shadow:0 2px 18px rgba(0,0,0,.28);
+}
+.genz-v2-hero-copy .genz-v2-eyebrow{color:rgba(255,255,255,.82)!important}
+.genz-v2-hero h1{
+  font-size:clamp(3.5rem,7vw,7rem)!important;
+  color:#fff!important;
+}
+.genz-v2-hero-copy>p:not(.genz-v2-eyebrow){color:rgba(255,255,255,.9)!important}
+.genz-v2-hero-made,
+.genz-v2-hero-scroll{
+  z-index:3!important;
+  color:rgba(255,255,255,.84)!important;
+}
+.genz-v2-hero-nav{
+  z-index:6!important;
+  top:0!important;
+  left:0!important;
+  right:0!important;
+  transform:none!important;
+  width:100%!important;
+  height:64px!important;
+  padding:0 30px!important;
+  justify-content:flex-end!important;
+  background:linear-gradient(to bottom,rgba(0,0,0,.24),transparent)!important;
+  pointer-events:auto!important;
+}
+.genz-v2-hero-nav a{color:rgba(255,255,255,.9)!important}
+
+@media(max-width:900px){
+  .genz-v2-hero{height:100svh!important;min-height:100svh!important;margin:0!important}
+  .genz-v2-hero-photo{height:100%!important;min-height:0!important}
+  .genz-v2-hero-panel{min-height:0!important;padding:0!important}
+  .genz-v2-hero-copy{
+    left:20px!important;
+    bottom:58px!important;
+    width:calc(100% - 40px)!important;
+  }
+  .genz-v2-hero h1{font-size:clamp(3.2rem,15vw,6rem)!important}
+  .genz-v2-hero-nav{height:54px!important;padding:0 18px!important;gap:16px!important}
+  .genz-v2-hero-panel-top{top:20px!important;left:18px!important}
+  .genz-v2-hero-panel-bottom{left:18px!important;bottom:20px!important}
+}
