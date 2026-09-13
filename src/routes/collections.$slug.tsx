@@ -98,7 +98,7 @@ function CollectionPage() {
         <div className="shell mt-20 grid grid-cols-2 gap-x-4 gap-y-12 pb-40 md:grid-cols-3 md:gap-x-6 xl:grid-cols-4">
           {products.map((product, i) => (
             <Reveal key={product.id} delay={i * 0.05}>
-              <ProductCard product={product} />
+              <ProductCard product={product} priority={i < 4} />
             </Reveal>
           ))}
         </div>
