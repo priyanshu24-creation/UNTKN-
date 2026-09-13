@@ -1,8 +1,14 @@
-import { useSuspenseQuery } from "@tanstack/react-query";
 import { Link, createFileRoute } from "@tanstack/react-router";
 
 import { Reveal, RevealImage } from "@/components/ui/Reveal";
-import { lookbookQuery } from "@/lib/queries";
+import GirlModel1 from "@/assets/Girl_Model_1.PNG";
+import GirlModel2 from "@/assets/Girl_Model_2.PNG";
+import GirlModel3 from "@/assets/Girl_Model_3.PNG";
+import GirlModel4 from "@/assets/Girl_Model_4.PNG";
+import GirlModel5 from "@/assets/Girl_Model_5.PNG";
+import GirlModel6 from "@/assets/Girl_Model_6.PNG";
+import GirlModel7 from "@/assets/Girl_Model_7.PNG";
+import GirlModel8 from "@/assets/Girl_Model_8.PNG";
 import { cn } from "@/lib/utils";
 
 export const Route = createFileRoute("/lookbook")({
@@ -12,92 +18,83 @@ export const Route = createFileRoute("/lookbook")({
       {
         name: "description",
         content:
-          "The UNTKN lookbook: campaign photography shot on the streets of Kolkata, styled with heavyweight thermals and hand-drawn graphics.",
+          "The UNTKN lookbook — real campaign photography featuring the collection.",
       },
       { property: "og:title", content: "Lookbook — UNTKN" },
       {
         property: "og:description",
-        content: "Campaign photography from the UNTKN studio. Shot on location, styled in-house.",
+        content: "Real campaign photography from UNTKN.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
   }),
-  loader: ({ context }) => context.queryClient.ensureQueryData(lookbookQuery()),
-  errorComponent: () => (
-    <div className="shell py-40 text-center">
-      <h1 className="display-md">The lookbook is unavailable</h1>
-      <p className="mt-4 text-sm text-muted-foreground">Please try again in a moment.</p>
-    </div>
-  ),
   component: LookbookPage,
 });
 
-function LookbookPage() {
-  const { data: items } = useSuspenseQuery(lookbookQuery());
+const LOOKBOOK_IMAGES = [
+  { src: GirlModel1, title: "KARMA", caption: "Front look" },
+  { src: GirlModel2, title: "KARMA", caption: "Back look" },
+  { src: GirlModel3, title: "HISTORY", caption: "Front / back" },
+  { src: GirlModel4, title: "HISTORY", caption: "Front / back" },
+  { src: GirlModel5, title: "KARMA", caption: "Editorial look" },
+  { src: GirlModel6, title: "KARMA", caption: "Editorial look" },
+  { src: GirlModel7, title: "HISTORY", caption: "Editorial look" },
+  { src: GirlModel8, title: "HISTORY", caption: "Editorial look" },
+];
 
+function LookbookPage() {
   return (
     <div className="pt-28 md:pt-40">
       <header className="shell max-w-3xl">
         <p className="label-xs text-muted-foreground">Lookbook</p>
-        <h1 className="display-lg mt-6">Shot on location, styled in-house</h1>
+        <h1 className="display-lg mt-6">Real pieces. Real people.</h1>
         <p className="mt-8 max-w-prose text-sm leading-relaxed text-muted-foreground">
-          Every frame is photographed on the people who wear it — no studio lighting, no retouched
-          bodies. Tap a frame to shop the piece.
+          Explore the UNTKN collection through real campaign photography. Every image
+          below comes from the brand&apos;s own product shoot — no stock or placeholder
+          fashion images.
         </p>
       </header>
 
-      {items.length === 0 ? (
-        <p className="shell mt-24 pb-40 text-sm text-muted-foreground">
-          The next lookbook is being shot. Check back shortly.
-        </p>
-      ) : (
-        <div className="shell mt-20 grid grid-cols-1 gap-4 pb-40 md:grid-cols-2 md:gap-6">
-          {items.map((item, i) => {
-            const wide = item.span === "wide" || item.span === "full";
-            const content = (
-              <figure className="group relative">
-                <RevealImage
-                  src={item.image_url}
-                  alt={item.title ?? item.caption ?? "UNTKN lookbook"}
-                  className={cn(wide ? "aspect-[16/10]" : "aspect-[4/5]")}
-                  delay={i * 0.05}
-                />
-                {(item.title || item.caption || item.product) && (
+      <div className="shell mt-20 grid grid-cols-1 gap-4 pb-40 md:grid-cols-2 md:gap-6">
+        {LOOKBOOK_IMAGES.map((item, i) => {
+          const wide = i === 0 || i === 3;
+
+          return (
+            <Reveal
+              key={`${item.title}-${i}`}
+              className={cn(wide && "md:col-span-2")}
+            >
+              <Link
+                to="/shop"
+                className="group block"
+                aria-label={`Shop ${item.title}`}
+              >
+                <figure>
+                  <RevealImage
+                    src={item.src}
+                    alt={`${item.title} — ${item.caption}`}
+                    className={cn(
+                      "w-full object-cover object-center",
+                      wide ? "aspect-[16/10]" : "aspect-[4/5]",
+                    )}
+                    delay={i * 0.04}
+                  />
                   <figcaption className="mt-4 flex items-baseline justify-between gap-6">
                     <div>
-                      {item.title && <p className="font-sans text-sm">{item.title}</p>}
-                      {item.caption && (
-                        <p className="mt-1.5 label-xs text-muted-foreground">{item.caption}</p>
-                      )}
+                      <p className="font-sans text-sm">{item.title}</p>
+                      <p className="mt-1.5 label-xs text-muted-foreground">
+                        {item.caption}
+                      </p>
                     </div>
-                    {item.product && (
-                      <span className="label-xs link-rule shrink-0">Shop the piece</span>
-                    )}
+                    <span className="label-xs link-rule shrink-0">Shop the collection</span>
                   </figcaption>
-                )}
-              </figure>
-            );
-
-            return (
-              <Reveal key={item.id} className={cn(wide && "md:col-span-2")}>
-                {item.product ? (
-                  <Link
-                    to="/products/$slug"
-                    params={{ slug: item.product.slug }}
-                    aria-label={`Shop ${item.product.name}`}
-                    className="block"
-                  >
-                    {content}
-                  </Link>
-                ) : (
-                  content
-                )}
-              </Reveal>
-            );
-          })}
-        </div>
-      )}
+                </figure>
+              </Link>
+            </Reveal>
+          );
+        })}
+      </div>
     </div>
   );
 }
