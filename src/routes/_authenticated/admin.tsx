@@ -50,16 +50,26 @@ function AdminLayout() {
 
   if (error || !data?.isAdmin) {
     return (
-      <div className="shell py-40">
-        <p className="label-xs text-muted-foreground">Studio</p>
-        <h1 className="display-md mt-4">Not authorised</h1>
-        <p className="mt-6 max-w-md text-sm leading-relaxed text-muted-foreground">
-          This area is limited to team accounts. If you should have access, ask an administrator to
-          grant your account the admin role.
-        </p>
-        <Link to="/" className="label-xs link-rule mt-10 inline-block">
-          Back to store
-        </Link>
+      <div className="min-h-screen bg-background">
+        <div className="mx-auto flex min-h-screen max-w-2xl items-center px-6 py-20 sm:px-10">
+          <div className="w-full border border-border bg-background p-8 sm:p-12">
+            <p className="label-xs text-muted-foreground">UNTKN STUDIO · RESTRICTED</p>
+            <h1 className="display-md mt-4">Administrators only.</h1>
+            <p className="mt-6 max-w-xl text-sm leading-relaxed text-muted-foreground">
+              You are signed in, but this account does not have administrator access. The Studio
+              is separate from the customer account area. Sign out and use an authorised admin
+              account to continue.
+            </p>
+            <div className="mt-10 flex flex-wrap gap-6">
+              <Link to="/auth/admin-signin" className="label-xs link-rule">
+                Switch to admin account →
+              </Link>
+              <Link to="/account" className="label-xs link-rule text-muted-foreground">
+                Go to my account
+              </Link>
+            </div>
+          </div>
+        </div>
       </div>
     );
   }

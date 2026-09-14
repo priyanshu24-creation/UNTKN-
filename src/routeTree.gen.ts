@@ -26,6 +26,7 @@ import { Route as ShopRouteImport } from './routes/shop'
 import { Route as TermsRouteImport } from './routes/terms'
 import { Route as AuthenticatedAccountRouteImport } from './routes/_authenticated/account'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthAdminSigninRouteImport } from './routes/auth.admin-signin'
 import { Route as AuthForgotRouteImport } from './routes/auth.forgot'
 import { Route as AuthResetRouteImport } from './routes/auth.reset'
 import { Route as AuthSigninRouteImport } from './routes/auth.signin'
@@ -136,6 +137,11 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthAdminSigninRoute = AuthAdminSigninRouteImport.update({
+  id: '/auth/admin-signin',
+  path: '/auth/admin-signin',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthForgotRoute = AuthForgotRouteImport.update({
   id: '/auth/forgot',
@@ -304,6 +310,7 @@ export interface FileRoutesByFullPath {
   '/terms': typeof TermsRoute
   '/account': typeof AuthenticatedAccountRouteWithChildren
   '/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/auth/admin-signin': typeof AuthAdminSigninRoute
   '/auth/forgot': typeof AuthForgotRoute
   '/auth/reset': typeof AuthResetRoute
   '/auth/signin': typeof AuthSigninRoute
@@ -346,6 +353,7 @@ export interface FileRoutesByTo {
   '/shipping': typeof ShippingRoute
   '/shop': typeof ShopRoute
   '/terms': typeof TermsRoute
+  '/auth/admin-signin': typeof AuthAdminSigninRoute
   '/auth/forgot': typeof AuthForgotRoute
   '/auth/reset': typeof AuthResetRoute
   '/auth/signin': typeof AuthSigninRoute
@@ -392,6 +400,7 @@ export interface FileRoutesById {
   '/terms': typeof TermsRoute
   '/_authenticated/account': typeof AuthenticatedAccountRouteWithChildren
   '/_authenticated/admin': typeof AuthenticatedAdminRouteWithChildren
+  '/auth/admin-signin': typeof AuthAdminSigninRoute
   '/auth/forgot': typeof AuthForgotRoute
   '/auth/reset': typeof AuthResetRoute
   '/auth/signin': typeof AuthSigninRoute
@@ -438,6 +447,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/account'
     | '/admin'
+    | '/auth/admin-signin'
     | '/auth/forgot'
     | '/auth/reset'
     | '/auth/signin'
@@ -480,6 +490,7 @@ export interface FileRouteTypes {
     | '/shipping'
     | '/shop'
     | '/terms'
+    | '/auth/admin-signin'
     | '/auth/forgot'
     | '/auth/reset'
     | '/auth/signin'
@@ -525,6 +536,7 @@ export interface FileRouteTypes {
     | '/terms'
     | '/_authenticated/account'
     | '/_authenticated/admin'
+    | '/auth/admin-signin'
     | '/auth/forgot'
     | '/auth/reset'
     | '/auth/signin'
@@ -569,6 +581,7 @@ export interface RootRouteChildren {
   ShippingRoute: typeof ShippingRoute
   ShopRoute: typeof ShopRoute
   TermsRoute: typeof TermsRoute
+  AuthAdminSigninRoute: typeof AuthAdminSigninRoute
   AuthForgotRoute: typeof AuthForgotRoute
   AuthResetRoute: typeof AuthResetRoute
   AuthSigninRoute: typeof AuthSigninRoute
@@ -697,6 +710,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/admin'
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/auth/admin-signin': {
+      id: '/auth/admin-signin'
+      path: '/auth/admin-signin'
+      fullPath: '/auth/admin-signin'
+      preLoaderRoute: typeof AuthAdminSigninRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/auth/forgot': {
       id: '/auth/forgot'
@@ -980,6 +1000,7 @@ const rootRouteChildren: RootRouteChildren = {
   ShippingRoute: ShippingRoute,
   ShopRoute: ShopRoute,
   TermsRoute: TermsRoute,
+  AuthAdminSigninRoute: AuthAdminSigninRoute,
   AuthForgotRoute: AuthForgotRoute,
   AuthResetRoute: AuthResetRoute,
   AuthSigninRoute: AuthSigninRoute,
