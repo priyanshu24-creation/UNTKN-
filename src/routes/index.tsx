@@ -4,31 +4,28 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { NewsletterForm } from "@/components/marketing/NewsletterForm";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { ButtonLink } from "@/components/ui/EditorialButton";
-import { Reveal, RevealImage } from "@/components/ui/Reveal";
+import { Reveal, RevealImage, RevealWords } from "@/components/ui/Reveal";
 import { siteConfig } from "@/config/site";
-import "./homepage-zara.css";
+import heroDragonFlame from "@/assets/hero-dragon-flame.png";
+import { useEffect, useState } from "react";
 import { homepageSectionsQuery, lookbookQuery, productsQuery } from "@/lib/queries";
 import type { HomepageSection } from "@/lib/types";
-import picture2 from "@/assets/Picture_2.jpeg";
-import picture3 from "@/assets/Picture_3-hero-sharp.jpeg";
-import picture5 from "@/assets/Picture_5.jpeg";
-import picture7 from "@/assets/Picture_7.jpeg";
-import picture8 from "@/assets/Picture_8.jpeg";
-import girlModel1 from "@/assets/Girl_Model_1.PNG";
-import girlModel2 from "@/assets/Girl_Model_2.PNG";
-import girlModel6 from "@/assets/Girl_Model_6.PNG";
 
 export const Route = createFileRoute("/")({
   head: () => ({
     meta: [
-      { title: "UNTKN — Unknown by Name. Unforgettable by Style." },
+      { title: "UNTKN — Heavyweight Waffle Thermals, Printed by Hand" },
       {
         name: "description",
         content:
-          "UNTKN is independent streetwear from Kolkata — limited drops, heavyweight pieces and graphics made to be remembered.",
+          "Independent streetwear from Kolkata. Hand-drawn graphics on heavyweight waffle thermals, made in short runs and never reprinted.",
       },
-      { property: "og:title", content: "UNTKN — Unknown by Name. Unforgettable by Style." },
-      { property: "og:description", content: "Limited streetwear drops from UNTKN. Wear your story." },
+      { property: "og:title", content: "UNTKN — Heavyweight Waffle Thermals, Printed by Hand" },
+      {
+        property: "og:description",
+        content:
+          "Independent streetwear from Kolkata. Hand-drawn graphics on heavyweight waffle thermals, made in short runs.",
+      },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
@@ -44,154 +41,420 @@ export const Route = createFileRoute("/")({
   component: HomePage,
 });
 
-function section(sections: HomepageSection[], key: string) {
-  return sections.find((item) => item.section_key === key) ?? null;
+function useSection(sections: HomepageSection[], key: string) {
+  return sections.find((s) => s.section_key === key) ?? null;
 }
-
-const REAL_EDITORIAL = [
-  { image: picture7, title: "DRAGON FLAME", meta: "MURAL / ON LOCATION" },
-  { image: girlModel1, title: "KARMA", meta: "OVERSIZED / FRONT" },
-  { image: picture8, title: "MISERY WORLD", meta: "OVERHEAD / LOCATION" },
-  { image: girlModel6, title: "HISTORY", meta: "BACK PRINT / FRONTIER" },
-  { image: girlModel2, title: "CHAKRAS", meta: "SEVEN CHAKRAS / BACK" },
-] as const;
 
 function HomePage() {
   const { data: sections } = useSuspenseQuery(homepageSectionsQuery());
   const { data: newArrivals } = useSuspenseQuery(productsQuery({ sort: "newest", limit: 4 }));
-  useSuspenseQuery(productsQuery({ featuredOnly: true, limit: 4 }));
-  useSuspenseQuery(lookbookQuery());
+  const { data: featured } = useSuspenseQuery(productsQuery({ featuredOnly: true, limit: 4 }));
+  const { data: lookbook } = useSuspenseQuery(lookbookQuery());
 
-  const hero = section(sections, "hero");
-  const collection = section(sections, "featured_collection");
-  const story = section(sections, "brand_story");
-  const newsletter = section(sections, "newsletter");
+  const hero = useSection(sections, "hero");
+  const collection = useSection(sections, "featured_collection");
+  const story = useSection(sections, "brand_story");
+  const promo = useSection(sections, "promo");
+  const gallery = useSection(sections, "gallery");
+  const newsletter = useSection(sections, "newsletter");
 
   return (
-    <main className="genz-v2-home">
-      <section className="genz-v2-hero">
-        <div className="genz-v2-hero-panel">
-          <div className="genz-v2-hero-panel-top">
-            <span>DROP 01 / 2026</span>
-          </div>
-          <div className="genz-v2-hero-copy">
-            <p className="genz-v2-eyebrow">{hero?.eyebrow ?? "CAPSULE 01 — WAFFLE PROGRAMME"}</p>
-            <h1>{hero?.title ?? "MISERY WORLD"}</h1>
-            <p>{hero?.subtitle ?? "Heavyweight waffle thermals, printed sleeve to sleeve, made in short runs and never reprinted."}</p>
-            <div className="genz-v2-actions">
-              <ButtonLink to={(hero?.cta_href ?? "/shop") as string} variant="solid" size="md">
-                {hero?.cta_label ?? "Shop collection"}
-              </ButtonLink>
-            </div>
-          </div>
-          <div className="genz-v2-hero-panel-bottom">
-            <span>UNKNOWN BY NAME. UNFORGETTABLE BY STYLE.</span>
-          </div>
-        </div>
-        <div className="genz-v2-hero-photo">
-          <img src={picture3} alt="UNTKN MISERY WORLD real campaign photograph" fetchPriority="high" decoding="async" />
-          <span className="genz-v2-hero-made">MADE IN KOLKATA</span>
-          <span className="genz-v2-hero-scroll">SCROLL ↓</span>
-        </div>
-        <nav className="genz-v2-hero-nav" aria-label="Primary navigation">
-          <Link to="/shop">SHOP</Link>
-          <Link to="/collections">COLLECTIONS</Link>
-          <Link to="/lookbook">LOOKBOOK</Link>
-          <Link to="/about">ABOUT</Link>
-        </nav>
-      </section>
+    <>
+      <Hero section={hero} />
 
-      <section className="genz-v2-intro shell">
-        <div className="genz-v2-intro-index">01</div>
-        <div>
-          <p className="genz-v2-eyebrow">THE NEW DROP</p>
-          <h2>Pieces with a point of view.</h2>
-        </div>
-        <Link to="/shop" className="genz-v2-link">Shop all <span>↗</span></Link>
-      </section>
-
-      <section className="genz-v2-products shell" aria-label="New arrivals">
-        <div className="genz-v2-product-grid">
-          {newArrivals.map((product, index) => (
-            <Reveal key={product.id} delay={index * 0.04} className="genz-v2-product-item">
+      <section className="home-section shell" aria-labelledby="new-arrivals">
+        <SectionHeader eyebrow="01 / THE DROP" title="New Arrivals" href="/shop" />
+        <div className="mt-8 grid grid-cols-2 gap-x-3 gap-y-10 md:mt-10 md:grid-cols-4 md:gap-x-5 md:gap-y-14">
+          {newArrivals.map((product, i) => (
+            <Reveal key={product.id} delay={i * 0.05}>
               <ProductCard product={product} />
             </Reveal>
           ))}
         </div>
       </section>
 
-      <section className="genz-v2-feature shell" aria-labelledby="collection-title">
-        <div className="genz-v2-feature-image">
-          <RevealImage src={picture2} alt="MISERY WORLD real product photograph" />
-          <span>01 / MISERY WORLD</span>
-        </div>
-        <div className="genz-v2-feature-copy">
-          <p className="genz-v2-eyebrow">{collection?.subtitle ?? "THE COLLECTION"}</p>
-          <h2 id="collection-title">{collection?.title ?? "MISERY WORLD"}</h2>
-          <p>{collection?.body ?? "A graphic-led uniform for days that don't need explaining."}</p>
-          <ButtonLink to={(collection?.cta_href ?? "/shop") as string} variant="outline" size="md">
-            {collection?.cta_label ?? "Explore the collection"}
-          </ButtonLink>
-        </div>
-      </section>
+      {collection && <FeaturedCollection section={collection} />}
 
-      <section className="genz-v2-editorial shell" aria-labelledby="editorial-title">
-        <div className="genz-v2-section-head">
-          <div>
-            <p className="genz-v2-eyebrow">02 / ON LOCATION</p>
-            <h2 id="editorial-title">No studio. No pretending.</h2>
+      {lookbook.length > 0 && <EditorialLookbook images={lookbook} />}
+
+      {story && <BrandStory section={story} />}
+
+      {promo && <PromoBanner section={promo} />}
+
+      {featured.length > 0 && (
+        <section className="home-section shell" aria-labelledby="featured-products">
+          <SectionHeader eyebrow="05 / SELECTED" title="Featured" href="/shop" linkLabel="Shop Featured" />
+          <div className="mt-8 grid grid-cols-2 gap-x-3 gap-y-10 md:mt-10 md:grid-cols-4 md:gap-x-5 md:gap-y-14">
+            {featured.map((product, i) => (
+              <Reveal key={product.id} delay={i * 0.05}>
+                <ProductCard product={product} />
+              </Reveal>
+            ))}
           </div>
-          <p>Real people. Real places. The clothes as they actually look.</p>
-        </div>
-        <div className="genz-v2-editorial-grid">
-          {REAL_EDITORIAL.map((item, index) => (
-            <Reveal key={item.title + index} className={`genz-v2-editorial-card genz-v2-editorial-card-${index + 1}`}>
-              <Link to="/lookbook">
-                <div className="genz-v2-editorial-media">
-                  <img src={item.image} alt={`${item.title} — UNTKN`} loading="lazy" decoding="async" />
-                </div>
-                <div className="genz-v2-editorial-meta">
-                  <strong>{item.title}</strong>
-                  <span>{item.meta}</span>
-                </div>
-              </Link>
+        </section>
+      )}
+
+      {gallery && lookbook.length > 0 && <GalleryStrip section={gallery} images={lookbook} />}
+
+      <Newsletter section={newsletter} />
+    </>
+  );
+}
+
+function SectionHeader({
+  eyebrow,
+  title,
+  href,
+  linkLabel = "View All",
+}: {
+  eyebrow: string;
+  title: string;
+  href: string;
+  linkLabel?: string;
+}) {
+  return (
+    <div className="editorial-section-header">
+      <div>
+        <p className="label-xs text-muted-foreground">{eyebrow}</p>
+        <h2 className="display-md mt-3">{title}</h2>
+      </div>
+      <Link to={href} className="label-xs link-rule shrink-0">
+        {linkLabel}
+      </Link>
+    </div>
+  );
+}
+
+/* ------------------------------- hero ------------------------------- */
+
+function Hero({ section }: { section: HomepageSection | null }) {
+  const primaryImage = section?.image_url ?? "";
+  const slides = [
+    { image: heroDragonFlame, showCopy: false },
+    { image: primaryImage, showCopy: true },
+  ].filter((slide) => Boolean(slide.image));
+
+  const [activeSlide, setActiveSlide] = useState(0);
+
+  useEffect(() => {
+    if (slides.length < 2) return;
+    const timer = window.setInterval(() => {
+      setActiveSlide((current) => (current + 1) % slides.length);
+    }, 6500);
+    return () => window.clearInterval(timer);
+  }, [slides.length]);
+
+  const current = slides[activeSlide] ?? slides[0];
+  const headline = section?.title ?? siteConfig.brand.tagline;
+
+  return (
+    <section className="hero-frame">
+      {slides.map((slide, index) => (
+        <img
+          key={`${slide.image}-${index}`}
+          src={slide.image}
+          alt=""
+          aria-hidden="true"
+          fetchPriority={index === 0 ? "high" : "auto"}
+          decoding="async"
+          className={`hero-image ${index === activeSlide ? "hero-image-active" : "hero-image-inactive"}`}
+          style={{ objectPosition: "center center" }}
+        />
+      ))}
+
+      <div className="hero-vignette" />
+
+      {current?.showCopy && (
+        <div className="hero-content shell">
+          <div className="max-w-2xl text-paper">
+            {section?.eyebrow && (
+              <Reveal y={14} duration={0.7}>
+                <p className="hero-eyebrow">{section.eyebrow}</p>
+              </Reveal>
+            )}
+
+            <h1 className="hero-title">
+              <RevealWords text={headline} delay={0.12} />
+            </h1>
+
+            {section?.subtitle && (
+              <Reveal y={18} delay={0.42} className="mt-5 max-w-xl md:mt-6">
+                <p className="hero-description">{section.subtitle}</p>
+              </Reveal>
+            )}
+
+            <Reveal y={18} delay={0.58} className="mt-7 flex flex-wrap gap-3 md:mt-9">
+              <ButtonLink
+                to={(section?.cta_href ?? "/shop") as string}
+                variant="onImage"
+                size="md"
+                className="hero-primary-button"
+              >
+                {section?.cta_label ?? "Shop Collection"}
+              </ButtonLink>
+
+              {section?.secondary_cta_label && (
+                <ButtonLink
+                  to={(section.secondary_cta_href ?? "/lookbook") as string}
+                  variant="onImage"
+                  size="md"
+                  className="hero-secondary-button"
+                >
+                  {section.secondary_cta_label}
+                </ButtonLink>
+              )}
             </Reveal>
+          </div>
+        </div>
+      )}
+
+      {slides.length > 1 && (
+        <div className="hero-slides" aria-label="Hero slides">
+          {slides.map((_, index) => (
+            <button
+              key={index}
+              type="button"
+              className={`hero-slide-dot ${index === activeSlide ? "hero-slide-dot-active" : ""}`}
+              aria-label={`Show hero slide ${index + 1}`}
+              aria-current={index === activeSlide ? "true" : undefined}
+              onClick={() => setActiveSlide(index)}
+            />
           ))}
         </div>
-        <div className="genz-v2-centered-link"><Link to="/lookbook" className="genz-v2-link">Enter the lookbook <span>↗</span></Link></div>
-      </section>
+      )}
 
-      <section className="genz-v2-manifesto">
-        <div className="shell">
-          <p className="genz-v2-eyebrow">03 / UNTKN</p>
-          <h2>Wear less noise.<br />Leave more impression.</h2>
-          <div className="genz-v2-manifesto-foot">
-            <p>{story?.body ?? "Short runs. Strong graphics. Honest photography. Built for people who don't need a uniform to belong."}</p>
-            <Link to={story?.cta_href ?? "/about"} className="genz-v2-invert-link">Our story ↗</Link>
-          </div>
+      <div className="hero-index label-xs" aria-hidden="true">
+        SCROLL TO EXPLORE
+      </div>
+    </section>
+  );
+}
+/* ------------------------ featured collection ------------------------ */
+
+function FeaturedCollection({ section }: { section: HomepageSection }) {
+  return (
+    <section className="home-section shell" aria-labelledby="featured-collection">
+      <div className="editorial-split">
+        <RevealImage
+          src={section.image_url ?? ""}
+          alt={section.title ?? "Featured collection"}
+          priority
+          className="editorial-image editorial-image-tall"
+        />
+
+        <div className="editorial-copy">
+          <Reveal>
+            <p className="label-xs text-muted-foreground">{section.eyebrow}</p>
+            <h2 id="featured-collection" className="display-lg mt-5">
+              {section.title}
+            </h2>
+            {section.subtitle && <p className="mt-5 label-sm text-muted-foreground">{section.subtitle}</p>}
+            {section.body && <p className="body-lg mt-7 max-w-md">{section.body}</p>}
+            {section.cta_label && section.cta_href && (
+              <ButtonLink to={section.cta_href} variant="outline" size="md" className="mt-9">
+                {section.cta_label}
+              </ButtonLink>
+            )}
+          </Reveal>
         </div>
-      </section>
+      </div>
+    </section>
+  );
+}
 
-      <section className="genz-v2-last-image shell">
-        <div className="genz-v2-last-image-wrap">
-          <img src={picture5} alt="UNTKN real on-location campaign photograph" loading="lazy" decoding="async" />
-          <div className="genz-v2-last-caption">
-            <span>SHOT ON LOCATION</span>
-            <span>UNTKN / 001</span>
-          </div>
-        </div>
-      </section>
+/* --------------------------- editorial lookbook --------------------------- */
 
-      <section className="genz-v2-newsletter shell" aria-labelledby="newsletter-title">
+function EditorialLookbook({
+  images,
+}: {
+  images: Array<{ id: string; image_url: string; title: string | null; caption?: string | null }>;
+}) {
+  const items = images.slice(0, 5);
+
+  return (
+    <section className="home-section shell" aria-labelledby="editorial-lookbook">
+      <div className="editorial-section-header">
         <div>
-          <p className="genz-v2-eyebrow">04 / THE LIST</p>
-          <h2 id="newsletter-title">Be there<br />when it drops.</h2>
+          <p className="label-xs text-muted-foreground">03 / EDITORIAL</p>
+          <h2 id="editorial-lookbook" className="display-md mt-3">
+            Campaign 01
+          </h2>
         </div>
-        <div className="genz-v2-newsletter-copy">
-          <p>{newsletter?.body ?? "Early access, new drops and occasional things worth knowing."}</p>
-          <NewsletterForm />
+        <Link to="/lookbook" className="label-xs link-rule">
+          Full Lookbook
+        </Link>
+      </div>
+
+      <div className="lookbook-grid mt-8 md:mt-10">
+        {items.map((item, i) => (
+          <Reveal
+            as="figure"
+            key={item.id}
+            delay={i * 0.07}
+            className={`lookbook-item lookbook-item-${i + 1}`}
+          >
+            <Link to="/lookbook" className="group block">
+              <div className="lookbook-media">
+                <img
+                  src={item.image_url}
+                  alt={item.title ?? "UNTKN campaign photograph"}
+                  loading="lazy"
+                  decoding="async"
+                  className="photo photo-zoom"
+                />
+                <span className="lookbook-number">0{i + 1}</span>
+              </div>
+              <figcaption className="mt-3 flex items-baseline justify-between gap-4">
+                <span className="label-xs">{item.title ?? "UNTKN"}</span>
+                {item.caption && <span className="label-xs text-muted-foreground">{item.caption}</span>}
+              </figcaption>
+            </Link>
+          </Reveal>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+/* --------------------------- brand story --------------------------- */
+
+function BrandStory({ section }: { section: HomepageSection }) {
+  return (
+    <section className="home-section shell" aria-labelledby="brand-story">
+      <div className="editorial-story">
+        <div className="editorial-story-copy">
+          <Reveal>
+            <p className="label-xs text-muted-foreground">04 / THE LABEL</p>
+            <h2 id="brand-story" className="display-lg mt-5 max-w-xl">
+              {section.title}
+            </h2>
+            {section.body && (
+              <div className="mt-7 max-w-lg space-y-5">
+                {section.body.split("\n\n").map((para) => (
+                  <p key={para.slice(0, 24)} className="body-lg">
+                    {para}
+                  </p>
+                ))}
+              </div>
+            )}
+            {section.cta_label && section.cta_href && (
+              <ButtonLink to={section.cta_href} variant="ghost" size="bare" className="mt-8">
+                <span className="link-rule">{section.cta_label}</span>
+              </ButtonLink>
+            )}
+          </Reveal>
         </div>
-      </section>
-    </main>
+
+        <RevealImage
+          src={section.image_url ?? ""}
+          alt={section.title ?? "UNTKN"}
+          className="editorial-story-image"
+        />
+      </div>
+    </section>
+  );
+}
+
+/* ---------------------------- promo banner ---------------------------- */
+
+function PromoBanner({ section }: { section: HomepageSection }) {
+  return (
+    <section className="promo-frame">
+      {section.image_url && (
+        <img
+          src={section.image_url}
+          alt=""
+          aria-hidden="true"
+          loading="lazy"
+          decoding="async"
+          className="photo absolute inset-0"
+          style={{ objectPosition: "center 38%" }}
+        />
+      )}
+      <div className="promo-overlay" />
+      <div className="shell relative z-10 flex h-full items-center">
+        <div className="max-w-2xl text-paper">
+          <Reveal>
+            <p className="label-xs text-paper/70">{section.eyebrow}</p>
+            <h2 className="display-lg mt-5">{section.title}</h2>
+            {section.subtitle && <p className="mt-5 label-sm text-paper/75">{section.subtitle}</p>}
+            {section.body && <p className="mt-6 max-w-lg text-[0.95rem] leading-relaxed text-paper/80">{section.body}</p>}
+            {section.cta_label && section.cta_href && (
+              <ButtonLink to={section.cta_href} variant="onImage" size="md" className="mt-9">
+                {section.cta_label}
+              </ButtonLink>
+            )}
+          </Reveal>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+/* ---------------------------- gallery strip ---------------------------- */
+
+function GalleryStrip({
+  section,
+  images,
+}: {
+  section: HomepageSection;
+  images: Array<{ id: string; image_url: string; title: string | null }>;
+}) {
+  return (
+    <section className="home-section shell" aria-labelledby="gallery">
+      <div className="editorial-section-header">
+        <div>
+          <p className="label-xs text-muted-foreground">06 / CAMPAIGN</p>
+          <h2 id="gallery" className="display-md mt-3">{section.title}</h2>
+        </div>
+        {section.subtitle && <p className="label-xs text-muted-foreground">{section.subtitle}</p>}
+      </div>
+
+      <ul className="gallery-strip mt-8 md:mt-10">
+        {images.slice(0, 5).map((item, i) => (
+          <Reveal as="li" key={item.id} delay={i * 0.05}>
+            <div className="aspect-[4/5] overflow-hidden bg-muted">
+              <img
+                src={item.image_url}
+                alt={item.title ?? "Campaign photograph"}
+                loading="lazy"
+                decoding="async"
+                className="photo photo-zoom"
+              />
+            </div>
+          </Reveal>
+        ))}
+      </ul>
+
+      {section.cta_label && section.cta_href && (
+        <div className="mt-8">
+          <ButtonLink to={section.cta_href} variant="outline" size="md">{section.cta_label}</ButtonLink>
+        </div>
+      )}
+    </section>
+  );
+}
+
+/* ----------------------------- newsletter ----------------------------- */
+
+function Newsletter({ section }: { section: HomepageSection | null }) {
+  return (
+    <section className="newsletter-frame shell" aria-labelledby="newsletter">
+      <div className="newsletter-inner">
+        <div>
+          <p className="label-xs text-muted-foreground">{section?.eyebrow ?? "07 / STUDIO LIST"}</p>
+          <h2 id="newsletter" className="display-lg mt-5 max-w-2xl">
+            {section?.title ?? "Never miss a drop."}
+          </h2>
+        </div>
+
+        <div className="max-w-md md:pb-1">
+          <p className="body-lg">
+            {section?.subtitle ?? "Short runs sell out. Subscribers hear before anyone else."}
+          </p>
+          <NewsletterForm className="mt-6" source="homepage" />
+        </div>
+      </div>
+    </section>
   );
 }
