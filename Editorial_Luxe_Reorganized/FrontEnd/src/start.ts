@@ -1,6 +1,6 @@
 import {
-  createStart,
   createCsrfMiddleware,
+  createStart,
 } from "@tanstack/react-start";
 
 import { attachSupabaseAuth } from "./integrations/supabase/auth-attacher";
