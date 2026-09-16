@@ -1,28 +1,26 @@
-import { defineConfig as defineViteConfig } from "vite";
-import { defineConfig as defineLovableConfig } from "@lovable.dev/vite-tanstack-config";
-import { nitro } from "nitro/vite";
+import { defineConfig } from "@lovable.dev/vite-tanstack-config";
 
-export default defineViteConfig(async (env) => {
-  const config = await defineLovableConfig({
-    tanstackStart: {
-      server: {
-        entry: "server",
+export default defineConfig({
+  vite: {
+    server: {
+      fs: {
+        allow: [".."],
       },
     },
+    build: {
+      rollupOptions: {
+        external: ["@supabase/supabase-js"],
+      },
+    },
+  },
 
-    // Disable Lovable's built-in Cloudflare Nitro.
-    // @ts-expect-error
-    nitro: false,
-  })(env);
+  nitro: {
+    preset: "node-server",
+  },
 
-  if (env.command === "build") {
-    config.plugins = [
-      ...(config.plugins ?? []),
-      nitro({
-        preset: "node-server",
-      }),
-    ];
-  }
-
-  return config;
+  tanstackStart: {
+    server: {
+      entry: "server",
+    },
+  },
 });
