@@ -11,7 +11,7 @@ export default defineConfig({
     server: { fs: { allow: [".."] } },
     build: {
       rollupOptions: {
-        external: ["@supabase/supabase-js"],
+        external: ["@supabase/supabase-js", "zod"],
       },
     },
   },
