@@ -7,15 +7,18 @@ export default defineConfig({
         allow: [".."],
       },
     },
-    build: {
-      rollupOptions: {
-        external: ["@supabase/supabase-js", "zod"],
-      },
+
+    // Force server dependencies to be bundled.
+    ssr: {
+      noExternal: ["@supabase/supabase-js", "zod"],
     },
   },
 
   nitro: {
     preset: "node-server",
+    externals: {
+      inline: ["@supabase/supabase-js", "zod"],
+    },
   },
 
   tanstackStart: {
