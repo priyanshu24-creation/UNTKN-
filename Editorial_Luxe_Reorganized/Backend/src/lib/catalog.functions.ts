@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
-import { createPublicClient } from "./supabase-public.server";
+const getPublicClient = async () => (await import("./supabase-public.server")).createPublicClient();
 import type {
   Category,
   HomepageSection,
@@ -101,7 +101,7 @@ export type ProductQuery = z.infer<typeof productQuerySchema>;
 export const listProducts = createServerFn({ method: "GET" })
   .inputValidator((data: unknown) => productQuerySchema.parse(data ?? {}))
   .handler(async ({ data }): Promise<ProductSummary[]> => {
-    const supabase = createPublicClient();
+    const supabase = await getPublicClient();
     let query = supabase.from("products").select(PRODUCT_SELECT).eq("published", true);
 
     if (data.category) {
@@ -172,7 +172,7 @@ export const listProducts = createServerFn({ method: "GET" })
 export const getProduct = createServerFn({ method: "GET" })
   .inputValidator((data: unknown) => z.object({ slug: z.string().min(1) }).parse(data))
   .handler(async ({ data }): Promise<ProductDetail | null> => {
-    const supabase = createPublicClient();
+    const supabase = await getPublicClient();
     const { data: row, error } = await supabase
       .from("products")
       .select(PRODUCT_SELECT)
@@ -188,7 +188,7 @@ export const getRelatedProducts = createServerFn({ method: "GET" })
     z.object({ slug: z.string(), categorySlug: z.string().nullable() }).parse(data),
   )
   .handler(async ({ data }): Promise<ProductSummary[]> => {
-    const supabase = createPublicClient();
+    const supabase = await getPublicClient();
     let query = supabase
       .from("products")
       .select(PRODUCT_SELECT)
@@ -204,7 +204,7 @@ export const getProductsByIds = createServerFn({ method: "GET" })
   .inputValidator((data: unknown) => z.object({ ids: z.array(z.string()).max(40) }).parse(data))
   .handler(async ({ data }): Promise<ProductSummary[]> => {
     if (!data.ids.length) return [];
-    const supabase = createPublicClient();
+    const supabase = await getPublicClient();
     const { data: rows, error } = await supabase
       .from("products")
       .select(PRODUCT_SELECT)
@@ -221,7 +221,7 @@ export const getProductsByIds = createServerFn({ method: "GET" })
 
 export const listCategories = createServerFn({ method: "GET" }).handler(
   async (): Promise<Category[]> => {
-    const supabase = createPublicClient();
+    const supabase = await getPublicClient();
     const { data, error } = await supabase
       .from("categories")
       .select("id, name, slug, description, image_url, sort_order")
@@ -235,7 +235,7 @@ export const listCategories = createServerFn({ method: "GET" }).handler(
 export const getCategory = createServerFn({ method: "GET" })
   .inputValidator((data: unknown) => z.object({ slug: z.string() }).parse(data))
   .handler(async ({ data }): Promise<Category | null> => {
-    const supabase = createPublicClient();
+    const supabase = await getPublicClient();
     const { data: row, error } = await supabase
       .from("categories")
       .select("id, name, slug, description, image_url, sort_order")
@@ -249,7 +249,7 @@ export const getCategory = createServerFn({ method: "GET" })
 /* ------------------------- filter facet values ------------------------- */
 
 export const listFilterFacets = createServerFn({ method: "GET" }).handler(async () => {
-  const supabase = createPublicClient();
+  const supabase = await getPublicClient();
   const [sizes, colors] = await Promise.all([
     supabase.from("sizes").select("id, name, sort_order").order("sort_order"),
     supabase.from("colors").select("id, name, hex_code, sort_order").order("sort_order"),
@@ -266,7 +266,7 @@ export const searchProducts = createServerFn({ method: "GET" })
   .handler(async ({ data }): Promise<ProductSummary[]> => {
     const term = data.q.trim();
     if (term.length < 2) return [];
-    const supabase = createPublicClient();
+    const supabase = await getPublicClient();
     const escaped = term.replace(/[%,()]/g, " ");
     const { data: rows, error } = await supabase
       .from("products")
@@ -284,7 +284,7 @@ export const searchProducts = createServerFn({ method: "GET" })
 
 export const listHomepageSections = createServerFn({ method: "GET" }).handler(
   async (): Promise<HomepageSection[]> => {
-    const supabase = createPublicClient();
+    const supabase = await getPublicClient();
     const { data, error } = await supabase
       .from("homepage_sections")
       .select(
@@ -299,7 +299,7 @@ export const listHomepageSections = createServerFn({ method: "GET" }).handler(
 
 export const listLookbookItems = createServerFn({ method: "GET" }).handler(
   async (): Promise<LookbookItem[]> => {
-    const supabase = createPublicClient();
+    const supabase = await getPublicClient();
     const { data, error } = await supabase
       .from("lookbook_items")
       .select("id, title, caption, image_url, span, product:products ( slug, name )")
@@ -317,7 +317,7 @@ export const subscribeNewsletter = createServerFn({ method: "POST" })
     z.object({ email: z.string().email().max(180), source: z.string().optional() }).parse(data),
   )
   .handler(async ({ data }): Promise<{ status: "subscribed" | "already" }> => {
-    const supabase = createPublicClient();
+    const supabase = await getPublicClient();
     const email = data.email.trim().toLowerCase();
     const { error } = await supabase
       .from("newsletter_subscribers")

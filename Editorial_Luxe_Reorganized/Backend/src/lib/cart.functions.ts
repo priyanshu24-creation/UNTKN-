@@ -3,7 +3,7 @@ import { z } from "zod";
 
 import { requireSupabaseAuth } from "../integrations/supabase/auth-middleware";
 import { siteConfig } from "@/config/site";
-import { createPublicClient } from "./supabase-public.server";
+const getPublicClient = async () => (await import("./supabase-public.server")).createPublicClient();
 import type { CartTotals, ResolvedCartLine } from "./types";
 
 const lineSchema = z.object({
@@ -44,7 +44,7 @@ export async function resolveCartServer(
   };
   if (!input.lines.length) return empty;
 
-  const supabase = createPublicClient();
+  const supabase = await getPublicClient();
   const variantIds = input.lines.map((l) => l.variantId);
 
   const { data: variants, error } = await supabase
@@ -126,7 +126,7 @@ export async function validateCouponServer(
   subtotal: number,
   userId?: string,
 ): Promise<CouponResult> {
-  const supabase = createPublicClient();
+  const supabase = await getPublicClient();
   const { data: coupon } = await supabase
     .from("coupons")
     .select(
