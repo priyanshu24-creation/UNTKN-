@@ -54,7 +54,7 @@ function AdminProducts() {
           name: "Untitled piece",
           slug: `untitled-${stamp}`,
           category_id: null,
-          short_description: null,
+          short_description: "",
           description: null,
           materials: null,
           care_instructions: null,

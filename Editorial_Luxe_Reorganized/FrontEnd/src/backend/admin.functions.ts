@@ -156,7 +156,7 @@ const productSchema = z.object({
     .max(160)
     .regex(/^[a-z0-9-]+$/, "Use lowercase letters, numbers and dashes only."),
   category_id: z.string().uuid().nullable(),
-  short_description: z.string().trim().max(300).nullable(),
+  short_description: z.string().trim().max(300),
   description: z.string().trim().max(4000).nullable(),
   materials: z.string().trim().max(2000).nullable(),
   care_instructions: z.string().trim().max(2000).nullable(),
