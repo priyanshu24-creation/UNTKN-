@@ -1,2 +1,13 @@
-// Framework entry bridge. Server implementation lives in Backend/server.ts.
-export { default } from "../../Backend/server";
+import {
+  createStartHandler,
+  defaultStreamHandler,
+} from "@tanstack/react-start/server";
+import { createServerEntry } from "@tanstack/react-start/server-entry";
+
+const handler = createStartHandler({
+  handler: defaultStreamHandler,
+});
+
+export default createServerEntry({
+  fetch: handler,
+});

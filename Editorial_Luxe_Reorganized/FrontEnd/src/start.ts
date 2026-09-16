@@ -1,2 +1,15 @@
-// Framework entry bridge. Start configuration lives in Backend/start.ts.
-export { startInstance } from "../../Backend/start";
+import {
+  createStart,
+  createCsrfMiddleware,
+} from "@tanstack/react-start";
+
+import { attachSupabaseAuth } from "./integrations/supabase/auth-attacher";
+
+const csrfMiddleware = createCsrfMiddleware({
+  filter: (ctx) => ctx.handlerType === "serverFn",
+});
+
+export const startInstance = createStart(() => ({
+  functionMiddleware: [attachSupabaseAuth],
+  requestMiddleware: [csrfMiddleware],
+}));
