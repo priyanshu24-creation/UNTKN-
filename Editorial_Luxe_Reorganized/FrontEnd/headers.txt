@@ -1,0 +1,9 @@
+HTTP/1.1 500 
+Vary: Origin
+x-lovable-error-source: app
+content-type: text/html; charset=utf-8
+Date: Wed, 16 Sep 2026 15:30:45 GMT
+Connection: keep-alive
+Keep-Alive: timeout=5
+Transfer-Encoding: chunked
+
