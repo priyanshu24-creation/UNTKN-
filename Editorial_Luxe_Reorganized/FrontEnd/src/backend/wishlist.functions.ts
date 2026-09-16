@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
-import { requireSupabaseAuth } from "../../../Backend/src/integrations/supabase/auth-middleware";
+import { requireSupabaseAuth } from "../integrations/supabase/auth-middleware";
 
 async function ensureWishlist(supabase: any, userId: string): Promise<string> {
   const { data: existing } = await supabase

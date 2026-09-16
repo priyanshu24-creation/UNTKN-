@@ -2,8 +2,8 @@ import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
 import { siteConfig } from "@/config/site";
-import { resolveCartServer } from "../../../Backend/src/lib/cart.functions";
-import type { OrderSummary } from "../../../Backend/src/lib/types";
+import { resolveCartServer } from "./cart.functions";
+import type { OrderSummary } from "./types";
 
 const lineSchema = z.object({
   variantId: z.string().uuid(),
@@ -38,9 +38,9 @@ const checkoutSchema = z.object({
 export const createCheckoutOrder = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => checkoutSchema.parse(data))
   .handler(async ({ data }) => {
-    const { supabaseAdmin } = await import("../../../Backend/src/integrations/supabase/client.server");
+    const { supabaseAdmin } = await import("../integrations/supabase/client.server");
     const { createRazorpayOrder, razorpayKeyId, razorpayConfigured } = await import(
-      "../../../Backend/src/lib/razorpay.server"
+      "./razorpay.server"
     );
 
     if (!razorpayConfigured()) {
@@ -148,8 +148,8 @@ const verifySchema = z.object({
 export const verifyCheckoutPayment = createServerFn({ method: "POST" })
   .inputValidator((data: unknown) => verifySchema.parse(data))
   .handler(async ({ data }) => {
-    const { supabaseAdmin } = await import("../../../Backend/src/integrations/supabase/client.server");
-    const { verifyCheckoutSignature } = await import("../../../Backend/src/lib/razorpay.server");
+    const { supabaseAdmin } = await import("../integrations/supabase/client.server");
+    const { verifyCheckoutSignature } = await import("./razorpay.server");
 
     const valid = await verifyCheckoutSignature({
       razorpayOrderId: data.razorpayOrderId,
@@ -195,7 +195,7 @@ export async function settleOrderPaid(input: {
   providerPaymentId: string;
   rawEvent: unknown;
 }): Promise<void> {
-  const { supabaseAdmin } = await import("../../../Backend/src/integrations/supabase/client.server");
+  const { supabaseAdmin } = await import("../integrations/supabase/client.server");
 
   const { data: order } = await supabaseAdmin
     .from("orders")
@@ -262,7 +262,7 @@ export async function markOrderPaymentFailed(input: {
   providerPaymentId?: string | null;
   rawEvent?: unknown;
 }): Promise<void> {
-  const { supabaseAdmin } = await import("../../../Backend/src/integrations/supabase/client.server");
+  const { supabaseAdmin } = await import("../integrations/supabase/client.server");
   const { data: payment } = await supabaseAdmin
     .from("payments")
     .select("id, order_id, status")
@@ -287,7 +287,7 @@ export async function markOrderPaymentFailed(input: {
 }
 
 export async function loadOrder(orderId: string): Promise<OrderSummary | null> {
-  const { supabaseAdmin } = await import("../../../Backend/src/integrations/supabase/client.server");
+  const { supabaseAdmin } = await import("../integrations/supabase/client.server");
   const { data } = await supabaseAdmin
     .from("orders")
     .select(

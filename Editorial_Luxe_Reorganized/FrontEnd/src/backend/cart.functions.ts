@@ -1,10 +1,10 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
-import { requireSupabaseAuth } from "../../../Backend/src/integrations/supabase/auth-middleware";
+import { requireSupabaseAuth } from "../integrations/supabase/auth-middleware";
 import { siteConfig } from "@/config/site";
-const getPublicClient = async () => (await import("../../../Backend/src/lib/supabase-public.server")).createPublicClient();
-import type { CartTotals, ResolvedCartLine } from "../../../Backend/src/lib/types";
+const getPublicClient = async () => (await import("./supabase-public.server")).createPublicClient();
+import type { CartTotals, ResolvedCartLine } from "./types";
 
 const lineSchema = z.object({
   variantId: z.string().uuid(),

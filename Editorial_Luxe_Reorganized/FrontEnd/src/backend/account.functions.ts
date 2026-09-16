@@ -1,7 +1,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
-import { requireSupabaseAuth } from "../../../Backend/src/integrations/supabase/auth-middleware";
+import { requireSupabaseAuth } from "../integrations/supabase/auth-middleware";
 
 export type AccountProfile = {
   id: string;

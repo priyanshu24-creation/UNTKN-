@@ -1,14 +1,14 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 
-const getPublicClient = async () => (await import("../../../Backend/src/lib/supabase-public.server")).createPublicClient();
+const getPublicClient = async () => (await import("./supabase-public.server")).createPublicClient();
 import type {
   Category,
   HomepageSection,
   LookbookItem,
   ProductDetail,
   ProductSummary,
-} from "../../../Backend/src/integrations/supabase/types";
+} from "../integrations/supabase/types";
 
 const PRODUCT_SELECT = `
   id, name, slug, short_description, description, base_price, sale_price, currency,
