@@ -6,7 +6,7 @@ import { Field, FormError } from "@/components/auth/AuthShell";
 import { useAuth } from "@/components/providers/AuthProvider";
 import { ActionButton } from "@/components/ui/EditorialButton";
 import { supabase } from "@/integrations/supabase/client";
-import { getMyProfile, updateMyProfile } from "@backend/lib/account.functions";
+import { getMyProfile, updateMyProfile } from "@/backend/account.functions";
 
 export const Route = createFileRoute("/_authenticated/account/settings")({
   component: SettingsPage,

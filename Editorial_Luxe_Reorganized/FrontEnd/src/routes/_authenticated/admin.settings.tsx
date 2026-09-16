@@ -12,7 +12,7 @@ import {
   TextArea,
   TextField,
 } from "@/components/admin/AdminUI";
-import { listAdminContent, saveSiteSetting } from "@backend/lib/admin.functions";
+import { listAdminContent, saveSiteSetting } from "@/backend/admin.functions";
 import { siteConfig } from "@/config/site";
 
 export const Route = createFileRoute("/_authenticated/admin/settings")({

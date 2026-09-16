@@ -3,7 +3,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 
 import { AdminHeader, AdminPanel, EmptyRow } from "@/components/admin/AdminUI";
-import { listAdminActivity } from "@backend/lib/admin.functions";
+import { listAdminActivity } from "@/backend/admin.functions";
 import { formatDate } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/admin/activity")({

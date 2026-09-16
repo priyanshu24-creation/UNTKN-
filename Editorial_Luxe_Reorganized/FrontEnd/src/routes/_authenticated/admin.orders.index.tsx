@@ -3,7 +3,7 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 
 import { AdminHeader, EmptyRow, StatusPill } from "@/components/admin/AdminUI";
-import { listAdminOrders } from "@backend/lib/admin.functions";
+import { listAdminOrders } from "@/backend/admin.functions";
 import { formatDate, formatPrice } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/admin/orders/")({

@@ -2,7 +2,7 @@ import { useQuery } from "@tanstack/react-query";
 import { Link, createFileRoute } from "@tanstack/react-router";
 
 import { siteConfig } from "@/config/site";
-import { getMyOrder } from "@backend/lib/account.functions";
+import { getMyOrder } from "@/backend/account.functions";
 import { formatDate, formatPrice } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/account/orders/$id")({

@@ -20,7 +20,7 @@ import {
   listAdminContent,
   saveHomepageSection,
   saveLookbookItem,
-} from "@backend/lib/admin.functions";
+} from "@/backend/admin.functions";
 
 export const Route = createFileRoute("/_authenticated/admin/content")({
   component: AdminContent,

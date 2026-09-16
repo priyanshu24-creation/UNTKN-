@@ -3,7 +3,7 @@ import { Link, createFileRoute } from "@tanstack/react-router";
 
 import { useWishlist } from "@/components/providers/WishlistProvider";
 import { ProductCard, ProductCardSkeleton } from "@/components/shop/ProductCard";
-import { getProductsByIds } from "@backend/lib/catalog.functions";
+import { getProductsByIds } from "@/backend/catalog.functions";
 
 export const Route = createFileRoute("/_authenticated/account/wishlist")({
   component: WishlistPage,

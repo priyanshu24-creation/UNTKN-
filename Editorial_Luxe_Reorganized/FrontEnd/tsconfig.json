@@ -2,8 +2,6 @@
   "include": [
     "src/**/*.ts",
     "src/**/*.tsx",
-    "../Backend/**/*.ts",
-    "../Backend/**/*.tsx",
     "vite.config.ts",
     "eslint.config.js"
   ],
@@ -37,9 +35,6 @@
     "paths": {
       "@/*": [
         "./src/*"
-      ],
-      "@backend/*": [
-        "../Backend/src/*"
       ]
     }
   }

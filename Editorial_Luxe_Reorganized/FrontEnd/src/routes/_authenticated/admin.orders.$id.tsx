@@ -11,7 +11,7 @@ import {
   SelectField,
   StatusPill,
 } from "@/components/admin/AdminUI";
-import { getAdminOrder, updateAdminOrderStatus } from "@backend/lib/admin.functions";
+import { getAdminOrder, updateAdminOrderStatus } from "@/backend/admin.functions";
 import { formatDate, formatPrice } from "@/lib/format";
 
 const STATUSES = [

@@ -22,7 +22,7 @@ import {
   saveAdminCategory,
   saveAdminColor,
   saveAdminSize,
-} from "@backend/lib/admin.functions";
+} from "@/backend/admin.functions";
 
 export const Route = createFileRoute("/_authenticated/admin/categories")({
   component: AdminCategories,

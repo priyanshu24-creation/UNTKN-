@@ -7,9 +7,9 @@ import { useAuth } from "@/components/providers/AuthProvider";
 import { useCart } from "@/components/providers/CartProvider";
 import { ActionButton, ButtonLink } from "@/components/ui/EditorialButton";
 import { siteConfig } from "@/config/site";
-import { listMyAddresses } from "@backend/lib/account.functions";
+import { listMyAddresses } from "@/backend/account.functions";
 import { formatPrice } from "@/lib/format";
-import { createCheckoutOrder, verifyCheckoutPayment } from "@backend/lib/orders.functions";
+import { createCheckoutOrder, verifyCheckoutPayment } from "@/backend/orders.functions";
 import { openRazorpayCheckout } from "@/lib/razorpay-checkout";
 import { CONFIRMATION_KEY } from "@/lib/checkout-storage";
 

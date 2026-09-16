@@ -9,7 +9,7 @@ import {
   type ReactNode,
 } from "react";
 
-import { loadServerWishlist, saveServerWishlist } from "@backend/lib/wishlist.functions";
+import { loadServerWishlist, saveServerWishlist } from "@/backend/wishlist.functions";
 import { useAuth } from "./AuthProvider";
 
 const STORAGE_KEY = "untkn.wishlist.v1";

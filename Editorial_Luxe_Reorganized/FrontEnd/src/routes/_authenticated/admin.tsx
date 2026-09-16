@@ -3,7 +3,7 @@ import { Link, Outlet, createFileRoute, useNavigate } from "@tanstack/react-rout
 import { useServerFn } from "@tanstack/react-start";
 
 import { useAuth } from "@/components/providers/AuthProvider";
-import { getMyAdminAccess } from "@backend/lib/admin.functions";
+import { getMyAdminAccess } from "@/backend/admin.functions";
 
 const LINKS = [
   { label: "Overview", to: "/admin" as const, exact: true },

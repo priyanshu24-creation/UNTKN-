@@ -10,7 +10,7 @@ import {
   EmptyRow,
   StatusPill,
 } from "@/components/admin/AdminUI";
-import { deleteAdminReview, listAdminReviews, setReviewApproval } from "@backend/lib/admin.functions";
+import { deleteAdminReview, listAdminReviews, setReviewApproval } from "@/backend/admin.functions";
 import { formatDate } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/admin/reviews")({

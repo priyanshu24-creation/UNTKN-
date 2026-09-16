@@ -23,7 +23,7 @@ import {
   saveAdminProduct,
   saveAdminVariant,
   saveProductImage,
-} from "@backend/lib/admin.functions";
+} from "@/backend/admin.functions";
 
 export const Route = createFileRoute("/_authenticated/admin/products/$id")({
   component: AdminProductEditor,

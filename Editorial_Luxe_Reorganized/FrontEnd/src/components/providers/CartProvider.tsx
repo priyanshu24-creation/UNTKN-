@@ -10,7 +10,7 @@ import {
   type ReactNode,
 } from "react";
 
-import { loadServerCart, resolveCart, saveServerCart } from "@backend/lib/cart.functions";
+import { loadServerCart, resolveCart, saveServerCart } from "@/backend/cart.functions";
 import type { CartLine, CartTotals } from "@/lib/types";
 import { useAuth } from "./AuthProvider";
 

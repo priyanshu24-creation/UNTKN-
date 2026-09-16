@@ -11,7 +11,7 @@ import {
   StatusPill,
   TextField,
 } from "@/components/admin/AdminUI";
-import { listAdminCustomers, setCustomerRole } from "@backend/lib/admin.functions";
+import { listAdminCustomers, setCustomerRole } from "@/backend/admin.functions";
 import { formatDate, formatPrice } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/admin/customers")({

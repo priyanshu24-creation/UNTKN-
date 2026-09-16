@@ -2,7 +2,7 @@ import { useMutation } from "@tanstack/react-query";
 import { ArrowRight } from "lucide-react";
 import { useState } from "react";
 
-import { subscribeNewsletter } from "@backend/lib/catalog.functions";
+import { subscribeNewsletter } from "@/backend/catalog.functions";
 import { cn } from "@/lib/utils";
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;

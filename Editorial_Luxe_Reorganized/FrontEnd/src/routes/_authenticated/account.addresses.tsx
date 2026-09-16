@@ -10,7 +10,7 @@ import {
   listMyAddresses,
   saveMyAddress,
   type AccountAddress,
-} from "@backend/lib/account.functions";
+} from "@/backend/account.functions";
 
 export const Route = createFileRoute("/_authenticated/account/addresses")({
   component: AddressesPage,

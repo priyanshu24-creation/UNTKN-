@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 import { useRef, useState } from "react";
 
-import { uploadAdminImage } from "@backend/lib/admin.functions";
+import { uploadAdminImage } from "@/backend/admin.functions";
 
 export function AdminHeader({
   eyebrow,

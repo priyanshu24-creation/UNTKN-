@@ -10,7 +10,7 @@ import {
   EmptyRow,
   StatusPill,
 } from "@/components/admin/AdminUI";
-import { deleteAdminProduct, listAdminProducts, saveAdminProduct } from "@backend/lib/admin.functions";
+import { deleteAdminProduct, listAdminProducts, saveAdminProduct } from "@/backend/admin.functions";
 import { formatPrice } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/admin/products/")({

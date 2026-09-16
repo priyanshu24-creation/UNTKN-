@@ -14,7 +14,7 @@ import {
   StatusPill,
   TextField,
 } from "@/components/admin/AdminUI";
-import { deleteAdminCoupon, listAdminCoupons, saveAdminCoupon } from "@backend/lib/admin.functions";
+import { deleteAdminCoupon, listAdminCoupons, saveAdminCoupon } from "@/backend/admin.functions";
 import { formatDate } from "@/lib/format";
 
 export const Route = createFileRoute("/_authenticated/admin/coupons")({

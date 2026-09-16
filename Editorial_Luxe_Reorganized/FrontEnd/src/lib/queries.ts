@@ -12,7 +12,7 @@ import {
   listProducts,
   searchProducts,
   type ProductQuery,
-} from "@backend/lib/catalog.functions";
+} from "@/backend/catalog.functions";
 
 export const productsQuery = (params: ProductQuery = {}) =>
   queryOptions({

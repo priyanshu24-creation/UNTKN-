@@ -7,7 +7,7 @@ import { ButtonLink } from "@/components/ui/EditorialButton";
 import { siteConfig } from "@/config/site";
 import { readConfirmationHandoff } from "@/lib/checkout-storage";
 import { formatPrice } from "@/lib/format";
-import { getOrderConfirmation } from "@backend/lib/orders.functions";
+import { getOrderConfirmation } from "@/backend/orders.functions";
 
 type Search = { order?: string };
 
